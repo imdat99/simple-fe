@@ -1,82 +1,93 @@
 import "./style.css";
 
-import { jsx } from "snabbdom";
-import { patch, view } from "./core";
-import { onCreated } from "./core/hooks";
-import { reactive, ref } from "./reactive";
+import { h, jsx } from "snabbdom";
+import { appComponent, cx } from "./core";
 
 const root = document.querySelector<HTMLDivElement>("#app")!;
 
-const Test = () => {
-  const count = reactive({value: 0});
-  return view(()=>(
-    <p on={{click: () => {
-      count.value ++
-    }}}>ahihi {count.value}</p>
-  ))
-}
+const Test = appComponent<{ count: number }>({
+  state: {
+    count: 0,
+  },
+  view() {
+    return h(
+      "p",
+      {
+        on: {
+          click: () => {
+            this.count++;
+          },
+        },
+      },
+      ["abc ", this.count]
+    );
+  },
+});
 
-const app = () => {
-  const count = ref(0);
-
-  onCreated(() => {
-    console.log("mounted")
-  })
-
-  return  view(() => (
-    <div
-      props={{
-        id: "app",
-      }}>
-      <div>
-        <a
-          props={{
-            href: "https://vitejs.dev",
-            target: "_blank",
-          }}>
-          <img
-            class={{ ["logo"]: true }}
+const App = appComponent({
+  state: {
+    count: 0,
+  },
+  view() {
+    return (
+      <div
+        props={{
+          id: "app",
+        }}
+      >
+        <div>
+          <a
             props={{
-              src: "/vite.svg",
-              alt: "Vite logo",
+              href: "https://vitejs.dev",
+              target: "_blank",
             }}
-          />
-        </a>
-        <a
-          props={{
-            href: "https://www.typescriptlang.org/",
-            target: "_blank",
-          }}>
-          <img
-            class={{ ["logo"]: true }}
+          >
+            <img
+              class={cx("logo")}
+              props={{
+                src: "/vite.svg",
+                alt: "Vite logo",
+              }}
+            />
+          </a>
+          <a
             props={{
-              src: "/vite.svg",
-              alt: "Vite logo",
+              href: "https://www.typescriptlang.org/",
+              target: "_blank",
             }}
-          />
-        </a>
-        <h1>Vite + TypeScript</h1>
-        <div class={{ ["card"]: true }}>
-          <button
-            props={{
-              id: "counter",
-              type: "button",
-            }}
-            on={{
-              click: () => {
-                count.value++;
-              },
-            }}>
-            {count.value}
-          </button>
+          >
+            <img
+              class={cx("logo")}
+              props={{
+                src: "/vite.svg",
+                alt: "Vite logo",
+              }}
+            />
+          </a>
+          <h1>Vite + TypeScript</h1>
+          <div class={cx("card")}>
+            <button
+              props={{
+                id: "counter",
+                type: "button",
+              }}
+              on={{
+                click: () => {
+                  this.count++;
+                },
+              }}
+            >
+              {this.count}
+            </button>
+          </div>
+          <p class={cx("read-the-docs")}>
+            Click on the Vite and TypeScript logos to learn more
+          </p>
+          {Test.$mount()}
         </div>
-        <p class={{ ["read-the-docs"]: true }}>
-          Click on the Vite and TypeScript logos to learn more
-        </p>
-        <Test />
       </div>
-    </div>
-  ))
-};
+    );
+  },
+});
 
-patch(root, app());
+App.$mount({ root });

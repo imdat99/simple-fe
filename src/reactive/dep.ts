@@ -1,18 +1,16 @@
-export type Effect = () => void;
+export type Effect = (...args: any) => void;
 export type Target = Record<string, any>;
 let activeEffect: Effect | null;
 export class Dep {
   private subscribers = new Set<Effect>();
 
-  depend() {
-    if (activeEffect) {
-      this.subscribers.add(activeEffect);
-    }
+  depend(Effect: any) {
+    this.subscribers.add(Effect);
   }
 
-  notify() {
+  notify(payload: any) {
     this.subscribers.forEach((effect: Effect) => {
-      effect();
+      effect(payload);
     });
   }
 }
