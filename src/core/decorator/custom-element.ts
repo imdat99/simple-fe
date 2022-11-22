@@ -6,27 +6,30 @@ const createState = (Com: any) => {
   return new Proxy(Com.data, {
     set(target, property, value) {
       target[property] = value;
-      Com.render.call(Com)
-      return true
-    }
-  })
-} 
+      if (Com.watch) {
+        Com.watch.call(Com, property);
+      }
+      Com.render.call(Com);
+      return true;
+    },
+  });
+};
 
 export function customElement(tagname: string) {
   return function classDecorator<
     T extends {
-      new (...args: any[]): Partial<CustomElement>
+      new (...args: any[]): Partial<CustomElement>;
     } & CustomElementConstructor
   >(constructor: T) {
     const Generated = class extends constructor {
       private $rootEl!: HTMLElement;
       private $oldView!: VNode;
       connectedCallback() {
-        if(this.view) {
+        if (this.view) {
           this.mount();
         }
-        if(this.data) {
-          this.data = createState(this)
+        if (this.data) {
+          this.data = createState(this);
         }
         if (this.connected) {
           this.connected();
@@ -34,7 +37,7 @@ export function customElement(tagname: string) {
       }
 
       render() {
-        const newView = this.view ? this.view() : h('div');
+        const newView = this.view ? this.view() : h("div");
         this.$rootEl = diff(
           this.$oldView,
           newView
@@ -45,12 +48,11 @@ export function customElement(tagname: string) {
       mount() {
         this.replaceChildren(
           (this.$rootEl = mount(
-            $render((this.$oldView = this.view ? this.view() : h('div'))),
+            $render((this.$oldView = this.view ? this.view() : h("div"))),
             (this.$rootEl = document.createElement("div"))
           ) as HTMLElement)
         );
       }
-      
     };
     customElements.define(tagname, Generated);
     return Generated;

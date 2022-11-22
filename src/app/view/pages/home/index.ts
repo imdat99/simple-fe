@@ -1,29 +1,23 @@
+import Client from "@app/utils/config/axios.config";
 import { customElement, AppElement, h } from "@core/index";
 
-
-@customElement('home-page')
+@customElement("home-page")
 export class HomePage extends AppElement {
   constructor() {
     super();
   }
 
-  connected() {
-  }
+  connected() {}
 
   data = {
     count: 0,
-    list: []
-  }
-
+    list: [],
+  };
 
   getData() {
-    fetch("https://jsonplaceholder.typicode.com/todos?_limit=10&_page="+String(Math.floor(Math.random() * 10)), {
-      method: "get",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        this.data.list = res;
-      });
+    Client.get("/homePage/getHome?page=1").then((res) => {
+      console.log(res.data);
+    });
   }
 
   view() {
@@ -33,7 +27,7 @@ export class HomePage extends AppElement {
         {
           href: "https://vitejs.dev",
           target: "_blank",
-        },
+        }
         // [
         //   h("img", {
         //     src: "/vite.svg",
@@ -47,7 +41,7 @@ export class HomePage extends AppElement {
         {
           href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
           target: "_blank",
-        },
+        }
         // [
         //   h("img", {
         //     src: javascriptLogo,
@@ -62,9 +56,7 @@ export class HomePage extends AppElement {
         {
           type: "button",
           on: {
-            click: () => {
-              this.data.count++
-            }
+            click: this.getData.bind(this),
           },
         },
         ["Bấm"]

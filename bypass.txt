@@ -1,0 +1,111 @@
+import dotenv from "dotenv";
+dotenv.config();
+
+import axios from "axios";
+import express, { Response, Request } from "express";
+import cors from "cors";
+
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+// http://ga-mobile-api.juzhangvideo.com/juzhangvideo/homePage/getHome?navigationId=362&page=0&size=10
+// docs:: https://documenter.getpostman.com/view/18986031/UVXdNeFD
+const Client = axios.create({
+  baseURL: "https://ga-mobile-api.loklok.tv/cms/app",
+  headers: {
+    lang: "en",
+    versioncode: "11",
+    clienttype: "ios_jike_default",
+  },
+});
+
+const corsOptions = {
+  origin: "*",
+  // credentials: true,
+  // exposedHeaders: ["set-cookie"],
+};
+app.use(cors(corsOptions));
+
+const Wrapper = (fn: any) => (req: Request, res: Response) => {
+  Promise.resolve(fn(req, res)).catch((err) => {
+    console.log(err);
+    return res
+      .status(500)
+      .json({ success: false, msg: "Internal server error" });
+  });
+};
+
+//Routes
+app.get(
+  "*",
+  Wrapper(async (req: Request, res: Response) => {
+    if (req.originalUrl !== "/favicon.ico") {
+      console.log(req.originalUrl);
+      await Client.get(req.originalUrl).then(({ data }) => {
+        //   console.log(res.data);
+        //   data.data.recommendItems.filter(
+        //     (section: any) => section.homeSectionType !== "BLOCK_GROUP"
+        //   );
+        //   res.json(
+        //     data.data.recommendItems.filter(
+        //       (section: any) => section.homeSectionType !== "BLOCK_GROUP"
+        //     )
+        //   );
+
+        res.json(data);
+      });
+      // return res.json({ msg: "chào bạn" });
+    }
+    // return res.json({ msg: "chào bạn" });
+  })
+);
+
+//server listenning
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log("running on port", PORT);
+});
+
+// navbar:
+// http://ga-mobile-api.juzhangvideo.com/juzhangvideo/homePage/navigationBar
+
+// homePage:
+// http://ga-mobile-api.juzhangvideo.com/juzhangvideo/homePage/getHome?navigationId=287&page=0&size=10
+
+// detail:
+// http://ga-mobile-api.juzhangvideo.com/juzhangvideo/movieDrama/get?category=0&id=26639&origin=detail
+
+// rawhead
+// GET http://ga-mobile-api.juzhangvideo.com/juzhangvideo/media/previewInfo?category=0&contentId=26639&definition=GROOT_SD&episodeId=165139 HTTP/1.1
+// media:
+// http://ga-mobile-api.juzhangvideo.com/juzhangvideo/media/previewInfo?category=1&contentId=7135&definition=GROOT_SD&episodeId=54402
+
+// Host: ga-mobile-api.juzhangvideo.com
+// aesKey: D6SFgFnpMZgxVMBlUaPUOzysajPR06Oy6ajJBx6/fOxss8v37dKAx03Y2pO7HKWLdHJ/QjxHfaLdgi7qoOAetTGWc/uhP4JaoGOj2DIWa/BUfg/SytudAelKwN82ZcSNeF7IhtyrLSXdsu5rYAhnswjc6NrZ9LNfqxOE0GKaDK4=
+// areaCode: VN
+// Accept: */*
+// Connection: keep-alive
+// mcc: 452
+// keke: false
+// Accept-Encoding: br;q=1.0, gzip;q=0.9, deflate;q=0.8
+// Accept-Language: en;q=1.0
+// Connection: keep-alive
+// deviceId: F9F843D1-BE70-45A4-828B-73E2B68356B7
+// versionCode: 29
+// lang: en
+// timezone: GMT+7
+// currentTime: 1669148174153
+// clientType: ios_juz
+// User-Agent: WatchTV/1.1 (com.xiaowu.loklok; build:2; iOS 16.1.0) AlaRequest/5.6.2
+// sign: 361e9aaa470ecec768c7e9072e133d6c
+
+// const Client = axios.create({
+//   baseURL: "http://ga-mobile-api.juzhangvideo.com/juzhangvideo",
+//   headers: {
+//     lang: "en",
+//     versioncode: "29",
+//     clienttype: "ios_juz",
+//     "User-Agent":
+//       "WatchTV/1.1 (com.xiaowu.loklok; build:2; iOS 16.1.0) AlaRequest/5.6.2",
+//   },
+// });

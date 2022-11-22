@@ -19,3 +19,11 @@ export type CustomElement = {
   view: () => VNode;
   data: Record<string, unknown>;
 };
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      [elemName: string]: any;
+    }
+  }
+}

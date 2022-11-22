@@ -8,7 +8,7 @@
   --3rd-color: #{$teal_9};
   --background-color: #{$gray_0};
   --second-background-color: #{$gray_1};
-  --3rd-background-color: #{$gray_4};
+  --3rd-background-color: #{$gray_3};
   --main-container-color: #{$gray_0};
   --second-container-color: #{$gray_2};
   --main-text-color: #{$dark_7};
@@ -19,10 +19,11 @@
   --second-shadow-color: rgba(0, 0, 0, 0.35);
   --overlay-color: rgba(0, 0, 0, 0.5);
   --close-color: #{$gray_3};
+  --light-icon: #{$yellow_5};
 }
 
 * {
-  transition: all ease 0.2s;
+  // transition: all ease 0.2s;
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -42,7 +43,7 @@
     filter: blur(2px);
   }
 }
-html.theme-dark {
+body.theme-dark {
   --background-color: #{$dark_8};
   --second-background-color: #{$gray_9};
   --main-text-color: #{$dark_1};
@@ -51,7 +52,7 @@ html.theme-dark {
   --second-shadow-color: rgba(59, 59, 59, 0.035);
   --overlay-color: rgba(126, 126, 126, 0.5);
   --close-color: #{$gray_8};
-  ----3rd-background-color: #{$gray_9};
+  --3rd-background-color: #{$gray_9};
   color: var(--main-text-color);
 }
 body {
@@ -69,7 +70,8 @@ a {
   transition: all 0.3s;
 }
 
-a:hover, a:focus {
+a:hover,
+a:focus {
   text-decoration: none;
 }
 
