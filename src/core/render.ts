@@ -1,14 +1,15 @@
-export * from "./diff";
+import { H, VNode } from "./type";
+
 // dom api
-const renderElem = ({ tagName, attrs, children }) => {
+const renderElem = ({ tagName, attrs, children }: VNode) => {
   const $el = document.createElement(tagName);
 
   // set attributes
   for (const [k, v] of Object.entries(attrs)) {
-    if (k === "on" ) {
+    if (k === "on") {
       for (const [event, handler] of Object.entries(v || {})) {
-        if(typeof handler === 'function') {
-          $el.addEventListener(event, handler, false)
+        if (typeof handler === "function") {
+          $el.addEventListener(event, handler as EventListener, false);
         }
       }
     } else {
@@ -18,14 +19,14 @@ const renderElem = ({ tagName, attrs, children }) => {
 
   // set children
   for (const child of children) {
-    const $child = render(child);
+    const $child = render(child as VNode);
     $el.appendChild($child);
   }
 
   return $el;
 };
 
-const render = (vNode) => {
+export const render = (vNode: VNode) => {
   if (typeof vNode === "string") {
     return document.createTextNode(vNode);
   }
@@ -33,19 +34,16 @@ const render = (vNode) => {
   return renderElem(vNode);
 };
 
-export default render;
-
-export const mount = ($node, $target) => {
+export const mount = ($node: HTMLElement | Text, $target: HTMLElement) => {
   $target.replaceWith($node);
   return $node;
 };
 
 // hyperscript
-
-export const h = (tagName, attrs, children = []) => {
+export const h: H = (tagName, attrs, ...children): VNode => {
   return {
     tagName,
     attrs: attrs || {},
-    children,
+    children: children.flat() || [],
   };
 };

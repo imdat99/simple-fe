@@ -1,7 +1,7 @@
-export function deepCompare() {
-  let i, l, leftChain, rightChain;
+export function deepCompare(..._Args: Record<string, unknown>[]) {
+  let i: any, l: any, leftChain: any, rightChain: any;
 
-  function compare2Objects(x, y) {
+  function compare2Objects(x: any, y: any) {
     let p;
 
     // remember that NaN === NaN returns false

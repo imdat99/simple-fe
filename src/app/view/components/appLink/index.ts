@@ -1,5 +1,7 @@
 import { router } from "@app/routes";
+import { customElement } from "@core/decorator";
 
+@customElement('app-link')
 export class AppLink extends HTMLElement {
   constructor() {
     super();
@@ -17,28 +19,30 @@ export class AppLink extends HTMLElement {
   static get observedAttributes() {
     return ["to", "target", "rel"];
   }
-  connectedCallback() {
+  connected() {
     const aTag = document.createElement("a");
     this.childNodes.forEach((child) => {
       aTag.appendChild(child);
     });
-    aTag.href = this.to;
+    if(this.to) {
+      aTag.href = this.to;
+    }
     if (this.rel) {
       aTag.rel = this.rel;
     }
     if (this.classList.value) {
-      aTag.classList = this.classList;
+      (this.classList.value as any).split(" ").forEach((item: string) => {
+        aTag.classList.add(item);
+      })
     }
-    if (this.style.value) {
-      aTag.style = this.style;
+    if (this.style.all) {
+      aTag.setAttribute('style', this.style.all)
     }
     aTag.addEventListener("click", (e) => {
-      console.log(this.to);
-      router.navigateTo(this.to);
+      
+      router.navigateTo(this.to || '/');
       e.preventDefault();
     });
     this.replaceWith(aTag);
   }
 }
-
-customElements.define("app-link", AppLink);

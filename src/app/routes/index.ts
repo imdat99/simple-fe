@@ -1,7 +1,5 @@
 import { NotFound } from "@app/view/pages/404";
 import Router from "vanilla-router";
-// import { HomePage } from "@app/view/pages/home";
-// import { AppMovie } from "@app/view/pages/movie";
 
 const appRoute = [
   {
@@ -18,13 +16,17 @@ const appRoute = [
     path: "/movie",
     component: () => import("@app/view/pages/movie"),
   },
+  {
+    path: "/search",
+    component: () => import("@app/view/pages/search"),
+  },
 ];
 
 export const router = new Router({
   mode: "history",
-  page404: function (path) {
-    // console.log('"/' + path + '" Page not found');
-    document.querySelector("my-app").replaceWith(new NotFound());
+  root: "/",
+  page404: function (_path) {
+    document.querySelector("my-app")!.replaceWith(new NotFound());
   },
 });
 router.addUriListener();

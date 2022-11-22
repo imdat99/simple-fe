@@ -1,49 +1,25 @@
-import render from ".";
 import { deepCompare } from "./compareattr";
+import { render } from "./render";
+import { AdditionalPatch, Attrs, ChildPatch, VChild, VNode } from "./type";
 
-const zip = (xs, ys) => {
+const zip = (
+  xs: any[] | NodeListOf<ChildNode>,
+  ys: any[] | NodeListOf<ChildNode>
+) => {
   const zipped = [];
   for (let i = 0; i < Math.max(xs.length, ys.length); i++) {
     zipped.push([xs[i], ys[i]]);
   }
   return zipped;
 };
-const diffAttrs = (oldAttrs, newAttrs) => {
-  const patches = [];
+const diffAttrs = (oldAttrs: Attrs, newAttrs: Attrs) => {
+  const patches: AdditionalPatch[] = [];
   const isCompare = deepCompare(oldAttrs, newAttrs);
 
-  // for (const [evnetNew, eventOld] of zip(
-  //   Object.entries(newAttrs?.on || {}).map(([k, v]) => ({ [k]: v })),
-  //   Object.entries(oldAttrs?.on || {}).map(([k, v]) => ({ [k]: v }))
-  // )) {
-  //   const [kNew, vNew] = evnetNew ? Object.entries(evnetNew)[0] : [];
-  //   const [kOld, vOld] = eventOld ? Object.entries(eventOld)[0] : [];
-  //   if (
-  //     (typeof vNew !== "function" || typeof vOld !== "function") &&
-  //     kNew === kOld
-  //     ) {
-
-  //     if (typeof vNew !== "function" && typeof vOld !== "function") {
-  //       patches.push(($node) => {
-  //         $node.removeEventListener(kNew, oldFn, false);
-  //         return $node;
-  //       });
-  //     } else {
-  //       oldFn = vNew
-  //       patches.push(($node) => {
-  //         $node.addEventListener(kNew, oldFn, false);
-  //         return $node;
-  //       });
-  //     }
-  //   }
-  // }
-  // }
-
-  // event
   if (!isCompare) {
     // set new attributes
     for (const [k, v] of Object.entries(newAttrs)) {
-      patches.push(($node) => {
+      patches.push(($node: HTMLElement) => {
         if (k === "on") {
         } else {
           $node.setAttribute(k, v);
@@ -62,28 +38,30 @@ const diffAttrs = (oldAttrs, newAttrs) => {
       }
     }
   }
-  return ($node) => {
+  return ($node: HTMLElement) => {
     for (const patch of patches) {
       patch($node);
     }
   };
 };
 
-const diffChildren = (oldVChildren, newVChildren) => {
+const diffChildren = (oldVChildren: VChild[], newVChildren: VChild[]) => {
   // console.log("oldVChildren", oldVChildren)
-  const childPatches = [];
+  const childPatches: ChildPatch[] = [];
   oldVChildren.forEach((oldVChild, i) => {
-    childPatches.push(diff(oldVChild, newVChildren[i]));
+    childPatches.push(
+      diff(oldVChild as VNode, newVChildren[i] as VNode) as ChildPatch
+    );
   });
 
-  const additionalPatches = [];
+  const additionalPatches: AdditionalPatch[] = [];
   for (const additionalVChild of newVChildren.slice(oldVChildren.length)) {
-    additionalPatches.push(($node) => {
-      $node.appendChild(render(additionalVChild));
+    additionalPatches.push(($node: HTMLElement) => {
+      $node.appendChild(render(additionalVChild as VNode));
       return $node;
     });
   }
-  return ($parent) => {
+  return ($parent: HTMLElement) => {
     for (const [patch, child] of zip(childPatches, $parent.childNodes)) {
       patch(child);
     }
@@ -96,9 +74,9 @@ const diffChildren = (oldVChildren, newVChildren) => {
   };
 };
 
-export const diff = (vOldNode, vNewNode) => {
+export const diff = (vOldNode: VNode, vNewNode: VNode) => {
   if (vNewNode === undefined) {
-    return ($node) => {
+    return ($node: HTMLElement) => {
       $node.remove();
       return undefined;
     };
@@ -106,7 +84,7 @@ export const diff = (vOldNode, vNewNode) => {
 
   if (typeof vOldNode === "string" || typeof vNewNode === "string") {
     if (vOldNode !== vNewNode) {
-      return ($node) => {
+      return ($node: HTMLElement) => {
         const $newNode = render(vNewNode);
         $node.replaceWith($newNode);
         return $newNode;
@@ -117,7 +95,7 @@ export const diff = (vOldNode, vNewNode) => {
   }
 
   if (vOldNode.tagName !== vNewNode.tagName) {
-    return ($node) => {
+    return ($node: HTMLElement) => {
       const $newNode = render(vNewNode);
       $node.replaceWith($newNode);
       return $newNode;
@@ -127,7 +105,7 @@ export const diff = (vOldNode, vNewNode) => {
   const patchAttrs = diffAttrs(vOldNode.attrs, vNewNode.attrs);
   const patchChildren = diffChildren(vOldNode.children, vNewNode.children);
 
-  return ($node) => {
+  return ($node: HTMLElement) => {
     patchAttrs($node);
     patchChildren($node);
     return $node;
