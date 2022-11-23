@@ -87,6 +87,12 @@ a:focus {
 
 footer {
   background: var(--3rd-background-color);
+  .footer-brand {
+    .logo-img {
+      width: 150px;
+      height: auto;
+    }
+  }
 }
 
 .navbar-brand .logo-img {

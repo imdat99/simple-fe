@@ -34,7 +34,7 @@ export class AppNav extends HTMLElement {
       <nav class="navbar navbar-expand-md" aria-label="Fourth navbar example">
         <div class="container-fluid">
           <app-link class="navbar-brand" to="/">
-            <img src="/logo-full.png" alt="" class="logo-img" />
+            <img src="/logo.png" alt="" class="logo-img" />
           </app-link>
           <button
             class="navbar-toggler collapsed"

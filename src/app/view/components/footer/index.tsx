@@ -15,7 +15,11 @@ export class AppFooter extends HTMLElement {
         <div class="container py-4">
           <div class="row gy-4 gx-2">
             <div class="col-lg-8 col-md-6">
-              <h5 class="h3 text-white">DAT09.FUN</h5>
+              <h5 class="h3 text-white">
+                <app-link class="footer-brand" to="/">
+                  <img src="/logo.png" alt="" class="logo-img" />
+                </app-link>
+              </h5>
               <p class="small text-muted">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
                 eiusmod tempor incididunt.
@@ -45,8 +49,7 @@ export class AppFooter extends HTMLElement {
                   <button
                     class="btn btn-primary"
                     id="button-addon2"
-                    type="button"
-                  >
+                    type="button">
                     <i class="fas fa-paper-plane"></i>
                   </button>
                 </div>
