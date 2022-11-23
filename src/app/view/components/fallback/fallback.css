@@ -1,6 +1,6 @@
 fall-back {
   position: relative;
-  background: transparent;
+
   height: calc(100vh - 58px - 248px);
   width: 100%;
   display: block;

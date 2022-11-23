@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "../constant";
+import { IQuery } from "../types";
 
 const headers = {
   crossDomain: true,
@@ -13,4 +14,21 @@ const Client = axios.create({
   headers,
 });
 
-export default Client;
+export default function appQuery(
+  this: any,
+  { method, url, params, data }: IQuery
+) {
+  this.data.loading = true;
+  Client({ method, url, params, data })
+    .then((res) => {
+      this.data.resData = res.data;
+    })
+    // .catch((e) => {
+    //   console.log(e);
+    // })
+    .finally(() => {
+      this.data.loading = false;
+    });
+}
+
+// export default Client;

@@ -1,7 +1,7 @@
 import { router } from "@app/routes";
-import { customElement } from "@core/decorator";
+import { define } from "@core/decorator";
 
-@customElement("app-link")
+@define("app-link")
 export class AppLink extends HTMLElement {
   constructor() {
     super();

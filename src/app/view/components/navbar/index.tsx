@@ -1,14 +1,16 @@
 import appRoute, { router } from "@app/routes";
-import { customElement } from "@core/decorator";
+import { AppElement } from "@core/appelement";
+import { define } from "@core/decorator";
 import { h } from "@core/render";
 import "./style.scss";
-@customElement("app-nav")
-export class AppNav extends HTMLElement {
+@define("app-nav")
+export class AppNav extends AppElement {
   constructor() {
     super();
   }
   connected() {
     this.data.dark = localStorage.getItem("dark") === "true";
+    console.log(this.props);
   }
 
   data = {

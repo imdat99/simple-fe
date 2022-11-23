@@ -1,7 +1,8 @@
 export class AppElement extends HTMLElement {
-  params: any
+  params: any;
   props: any;
-  constructor(){
-    super()
+  data: any;
+  constructor() {
+    super();
   }
 }

@@ -1,8 +1,8 @@
-import { customElement } from "@core/decorator";
+import { define } from "@core/decorator";
 import { h } from "@core/index";
 import "./notfound.css";
 
-@customElement('not-found')
+@define("not-found")
 export class NotFound extends HTMLElement {
   constructor() {
     super();

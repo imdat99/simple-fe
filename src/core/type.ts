@@ -13,11 +13,15 @@ export interface VNode {
 
 export type ChildPatch = ($node: HTMLElement) => HTMLElement | String;
 export type AdditionalPatch = (e: HTMLElement) => HTMLElement;
+export type ChangePropCallback = Map<any, (ov?: any, nv?: any) => void>;
 
 export type CustomElement = {
-  connected: () => void;
+  _changePropCallbacks?: Record<string, string[]>;
+  connected?: () => void;
+  disconnected?: () => void;
   view: () => VNode;
   data: Record<string, unknown>;
+  stateData: () => Record<string, any>;
 };
 
 declare global {

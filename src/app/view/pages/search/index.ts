@@ -1,15 +1,14 @@
 import { AppElement } from "@core/appelement";
-import { customElement } from "@core/decorator";
+import { define } from "@core/decorator";
 import { h } from "@core/index";
 
-@customElement('app-search')
+@define("app-search")
 export class AppSearch extends AppElement {
   constructor() {
     super();
   }
 
-  connected() {
-  }
+  connected() {}
 
   view() {
     return h("div", {}, [h("h1", null, ["Tìm kiếm"])]);

@@ -1,7 +1,7 @@
-import { customElement } from "@core/decorator";
+import { define } from "@core/decorator";
 import { h } from "@core/render";
 
-@customElement("app-footer")
+@define("app-footer")
 export class AppFooter extends HTMLElement {
   constructor() {
     super();
@@ -26,7 +26,7 @@ export class AppFooter extends HTMLElement {
               </p>
               <p class="small text-muted mb-0">
                 © Copyrights. All rights reserved.{" "}
-                <a class="text-primary" href="/">
+                <a class="text-danger" href="/">
                   dat09.fun
                 </a>
               </p>
@@ -46,10 +46,7 @@ export class AppFooter extends HTMLElement {
                     aria-label="Recipient's username"
                     aria-describedby="button-addon2"
                   />
-                  <button
-                    class="btn btn-primary"
-                    id="button-addon2"
-                    type="button">
+                  <button class="btn btn-danger" type="button">
                     <i class="fas fa-paper-plane"></i>
                   </button>
                 </div>

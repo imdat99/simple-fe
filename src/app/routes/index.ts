@@ -12,8 +12,18 @@ const appRoute = [
     component: () => import("@app/view/pages/home"),
   },
   {
+    name: "Phim hàn",
+    path: "/k-drama",
+    component: () => import("@app/view/pages/movie"),
+  },
+  {
     name: "Phim Hot",
     path: "/movie",
+    component: () => import("@app/view/pages/movie"),
+  },
+  {
+    name: "Anime",
+    path: "/anime",
     component: () => import("@app/view/pages/movie"),
   },
   {
