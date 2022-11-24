@@ -8,7 +8,9 @@ export class AppMovie extends AppElement {
     super();
   }
 
-  connected() {}
+  connected() {
+    console.log(this.params)
+  }
 
   view() {
     return h("div", {}, [h("h1", null, ["Phim"])]);

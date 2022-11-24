@@ -18,6 +18,6 @@ export class FallBack extends HTMLElement {
   connected() {}
 
   view() {
-    return LoadingScren();
+    return <LoadingScren />;
   }
 }

@@ -7,7 +7,7 @@ const zip = (
   ys: any[] | NodeListOf<ChildNode>
 ) => {
   const zipped = [];
-  for (let i = 0; i < Math.max(xs.length, ys.length); i++) {
+  for (let i = 0; i < Math.max(xs?.length, ys?.length); i++) {
     zipped.push([xs[i], ys[i]]);
   }
   return zipped;
@@ -48,22 +48,28 @@ const diffAttrs = (oldAttrs: Attrs, newAttrs: Attrs) => {
 const diffChildren = (oldVChildren: VChild[], newVChildren: VChild[]) => {
   // console.log("oldVChildren", oldVChildren)
   const childPatches: ChildPatch[] = [];
-  oldVChildren.forEach((oldVChild, i) => {
+  oldVChildren?.forEach((oldVChild, i) => {
     childPatches.push(
       diff(oldVChild as VNode, newVChildren[i] as VNode) as ChildPatch
     );
   });
 
   const additionalPatches: AdditionalPatch[] = [];
-  for (const additionalVChild of newVChildren.slice(oldVChildren.length)) {
-    additionalPatches.push(($node: HTMLElement) => {
-      $node.appendChild(render(additionalVChild as VNode));
-      return $node;
-    });
+  if(newVChildren) {
+    for (const additionalVChild of newVChildren.slice(oldVChildren.length)) {
+      additionalPatches.push(($node: HTMLElement) => {
+        $node.appendChild(render(additionalVChild as VNode));
+        return $node;
+      });
+    }
   }
   return ($parent: HTMLElement) => {
-    for (const [patch, child] of zip(childPatches, $parent.childNodes)) {
-      patch(child);
+    for (const [patch, child] of zip(childPatches, $parent?.childNodes)) {
+      try {
+        patch(child);
+      } catch {
+        console.log(zip(childPatches, $parent?.childNodes))
+      }
     }
 
     for (const patch of additionalPatches) {
@@ -78,7 +84,7 @@ export const diff = (vOldNode: VNode, vNewNode: VNode) => {
   if (vNewNode === undefined) {
     return ($node: HTMLElement) => {
       $node.remove();
-      return undefined;
+      return $node;
     };
   }
 
@@ -86,7 +92,7 @@ export const diff = (vOldNode: VNode, vNewNode: VNode) => {
     if (vOldNode !== vNewNode) {
       return ($node: HTMLElement) => {
         const $newNode = render(vNewNode);
-        $node.replaceWith($newNode);
+          $node.replaceWith($newNode);
         return $newNode;
       };
     } else {
@@ -94,16 +100,16 @@ export const diff = (vOldNode: VNode, vNewNode: VNode) => {
     }
   }
 
-  if (vOldNode.tagName !== vNewNode.tagName) {
+  if (vOldNode?.tagName !== vNewNode?.tagName) {
     return ($node: HTMLElement) => {
       const $newNode = render(vNewNode);
-      $node.replaceWith($newNode);
+      $node?.replaceWith($newNode);
       return $newNode;
     };
   }
 
-  const patchAttrs = diffAttrs(vOldNode.attrs, vNewNode.attrs);
-  const patchChildren = diffChildren(vOldNode.children, vNewNode.children);
+  const patchAttrs = diffAttrs(vOldNode?.attrs, vNewNode?.attrs);
+  const patchChildren = diffChildren(vOldNode?.children, vNewNode?.children);
 
   return ($node: HTMLElement) => {
     patchAttrs($node);

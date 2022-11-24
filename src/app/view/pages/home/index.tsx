@@ -9,12 +9,13 @@ export class HomePage extends AppElement {
   }
 
   connected() {
-    // this.getData();
+    this.getData();
   }
 
   stateData() {
     return {
       loading: false,
+      show: false,
       resData: undefined,
       params: {
         page: 0,
@@ -41,20 +42,29 @@ export class HomePage extends AppElement {
   }
 
   view() {
-    return this.data.loading ? (
-      LoadingScren()
-    ) : (
-      <h1
-        on={{
-          click: () => {
-            this.data.params.page += 1;
-            // console.log("aaa");
-          },
-        }}
-      >
-        ahihi
-        {/* <p>{this.data.params.page}</p> */}
-      </h1>
+    return (
+      <div>
+        <h1
+          on={{
+            click: () => {
+              this.data.params.page += 1;
+              // console.log("aaa");
+            },
+          }}>
+          ahihi
+        </h1>
+        <button
+          on={{
+            click: () => {
+              this.data.show = !this.data.show;
+            },
+          }}>
+          Show
+        </button>
+        <p>{this.data.resData?.data.searchKeyWord}</p>
+        {this.data.show && <LoadingScren />}
+        {this.data.loading && <div class="spinner"></div>}
+      </div>
     );
   }
 }

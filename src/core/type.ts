@@ -6,7 +6,7 @@ export type H = (
 ) => VNode;
 export type Attrs = Record<string, any>;
 export interface VNode {
-  tagName: string;
+  tagName?: string;
   attrs: Attrs;
   children: VChild[];
 }

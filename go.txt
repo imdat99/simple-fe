@@ -1,13 +1,14 @@
-module github.com/imdat99/bypass-cors
 package main
 
 import (
 	"io"
+	"log"
 	"net/http"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 
 var client = &http.Client{}
@@ -20,6 +21,7 @@ var header = http.Header{
 	"User-Agent":   {"WatchTV/1.1 (com.xiaowu.loklok; build:2; iOS 16.1.0) AlaRequest/5.6.2"},
 }
 var handle = func(c *fiber.Ctx) error {
+	log.Println("[" + c.Method() + "]: " + c.OriginalURL())
 	req, _ := http.NewRequest(c.Method(), baseUrl+c.OriginalURL(), strings.NewReader(string(c.Body())))
 	req.Header = header
 	res, err := client.Do(req)
@@ -38,10 +40,10 @@ var handle = func(c *fiber.Ctx) error {
 func main() {
 	app := fiber.New()
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "Origin, Content-Type: application/json; charset=utf-8",
+		AllowOrigins: "http://localhost:5173",
 	}))
+	app.Use(recover.New())
 	app.Get("*", handle)
 	app.Post("*", handle)
-	app.Listen(":3000")
+	log.Fatal(app.Listen(":5000"))
 }

@@ -23,7 +23,7 @@ export class AppOutlet extends HTMLElement {
         }
         if (item.component) {
           const _compoent = this._componentMap.get(item.path);
-          if (_compoent) {
+          if (_compoent && !params) {
             this.replaceChildren(_compoent);
           } else {
             this.replaceChildren(this._fallBack);

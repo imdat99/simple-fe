@@ -100,7 +100,7 @@ export function define(tagname: string) {
     // const compnentDefaultState = componentStateMap.get(compnentId);
 
     const Generated = class extends constructor {
-      private $rootEl!: HTMLElement;
+      private $rootEl!: HTMLElement | Text;
       private $oldView!: VNode;
       private $id = compnentId;
       connectedCallback() {
@@ -131,7 +131,7 @@ export function define(tagname: string) {
         this.$rootEl = diff(
           this.$oldView,
           newView
-        )(this.$rootEl) as HTMLElement;
+        )(this.$rootEl as any) as HTMLElement;
         this.$oldView = newView;
       }
 
@@ -139,7 +139,7 @@ export function define(tagname: string) {
         this.replaceChildren(
           (this.$rootEl = mount(
             $render((this.$oldView = this.view ? this.view() : h("div"))),
-            (this.$rootEl = document.createElement("div"))
+            (this.$rootEl = document.createTextNode("") as any)
           ) as HTMLElement)
         );
       }

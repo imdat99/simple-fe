@@ -17,8 +17,12 @@ const appRoute = [
     component: () => import("@app/view/pages/movie"),
   },
   {
-    name: "Phim Hot",
+    name: "Phim lẻ",
     path: "/movie",
+    component: () => import("@app/view/pages/movie"),
+  },
+  {
+    path: "/movie/(:any)",
     component: () => import("@app/view/pages/movie"),
   },
   {
