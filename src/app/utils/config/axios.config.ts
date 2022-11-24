@@ -8,7 +8,7 @@ const headers = {
   contentType: "application/json",
 };
 
-const Client = axios.create({
+export const Client = axios.create({
   // withCredentials: true,
   baseURL: BASE_URL,
   headers,

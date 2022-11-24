@@ -1,3 +1,5 @@
+import appQuery from "@app/utils/config/axios.config";
+import ListMovie from "@app/view/components/movie-list";
 import { AppElement } from "@core/appelement";
 import { define } from "@core/decorator";
 import { h } from "@core/index";
@@ -8,7 +10,24 @@ export class AppSearch extends AppElement {
     super();
   }
 
-  connected() {}
+  stateData() {
+    return {
+      loading: false,
+      resData: undefined,
+    };
+  }
+  getDefaultData() {
+    appQuery.call(this, {
+      method: "GET",
+      url: "/search/v1/searchLeaderboard",
+    });
+  }
+  watch() {
+    // console.log(this.data.resData);
+  }
+  connected() {
+    this.getDefaultData();
+  }
 
   view() {
     return (
@@ -24,14 +43,16 @@ export class AppSearch extends AppElement {
             <button
               class="btn btn-outline-secondary"
               type="button"
-              id="button-addon2">
+              id="button-addon2"
+            >
               <i class="fa-solid fa-magnifying-glass"></i>
             </button>
           </div>
         </div>
         <div class="result-list">
-          ahihi
+          {ListMovie(this.data.resData?.data?.list)}
         </div>
+        {this.data.loading && <div class="spinner"></div>}
       </div>
     );
   }

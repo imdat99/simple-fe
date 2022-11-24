@@ -32,7 +32,7 @@ export class AppFooter extends HTMLElement {
               </p>
             </div>
             <div class="col-lg-4 col-md-6">
-              <h5 class="text-white mb-3">Newsletter</h5>
+              <h5 class="mb-3">Newsletter</h5>
               <p class="small text-muted">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
                 eiusmod tempor incididunt.

@@ -1,3 +1,14 @@
+export const zip = (
+  xs: any[] | NodeListOf<ChildNode>,
+  ys: any[] | NodeListOf<ChildNode>
+) => {
+  const zipped = [];
+  for (let i = 0; i < Math.max(xs?.length, ys?.length); i++) {
+    zipped.push([xs[i], ys[i]]);
+  }
+  return zipped;
+};
+
 export function deepCompare(..._Args: Record<string, unknown>[]) {
   let i: any, l: any, leftChain: any, rightChain: any;
 
@@ -126,4 +137,35 @@ export function deepCompare(..._Args: Record<string, unknown>[]) {
   }
 
   return true;
+}
+
+export function memo(fun: Function) {
+  let cache: any;
+  let cachefn: any;
+  return function (n: any) {
+    // console.log("n", n);
+    // console.log("cache", isEqual(n, cache));
+    // console.log("n", n, cache);
+    // const diff = reduce(
+    //   cache,
+    //   function (result, value, key) {
+    //     return isEqual(value, n[key])
+    //       ? result
+    //       : result.concat({ [key]: cache[key] });
+    //   },
+    //   []
+    // );
+    // console.log("dif", diff);
+
+    if (deepCompare(n, cache)) {
+      // console.log("đ", cache);
+      return cachefn;
+    } else {
+      const result = fun(n);
+      cache = n;
+      cachefn = result;
+      // console.log("res", result);
+      return result;
+    }
+  };
 }

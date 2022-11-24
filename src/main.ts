@@ -13,7 +13,6 @@ export class MyApp extends HTMLElement {
   connected() {
     console.log("app bootstrap");
     const appNav = new AppNav();
-    appNav.props = { ahiihi: 123 };
     this.appendChild(appNav);
     this.appendChild(new AppOutlet());
     this.appendChild(new AppFooter());

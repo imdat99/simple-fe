@@ -1,5 +1,5 @@
 import { h, mount } from "@core/render";
-import { CustomElement, VNode } from "@core/type";
+import { ElementContructor, VNode } from "@core/type";
 import { $render, diff } from "..";
 
 const randomId = (name: string) =>
@@ -91,11 +91,7 @@ const isProxy = (obj: object) => {
 };
 
 export function define(tagname: string) {
-  return function classDecorator<
-    T extends {
-      new (...args: any[]): Partial<CustomElement>;
-    } & CustomElementConstructor
-  >(constructor: T) {
+  return function classDecorator<T extends ElementContructor>(constructor: T) {
     const compnentId = randomId(constructor.name);
     // const compnentDefaultState = componentStateMap.get(compnentId);
 
@@ -105,6 +101,7 @@ export function define(tagname: string) {
       private $id = compnentId;
       connectedCallback() {
         if (this.stateData) {
+          console.log("aaa");
           this.data = this.stateData();
         }
         if (this.view) {

@@ -1,3 +1,5 @@
+import { AppElement } from "./appelement";
+
 export type VChild = VNode | String | H;
 export type H = (
   t: string,
@@ -24,6 +26,9 @@ export type CustomElement = {
   stateData: () => Record<string, any>;
 };
 
+export type ElementContructor = {
+  new (...args: any[]): Partial<CustomElement & AppElement>;
+} & CustomElementConstructor;
 declare global {
   namespace JSX {
     interface IntrinsicElements {

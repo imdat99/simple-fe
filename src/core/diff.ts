@@ -1,17 +1,7 @@
-import { deepCompare } from "./compareattr";
+import { zip, deepCompare } from "./helper";
 import { render } from "./render";
 import { AdditionalPatch, Attrs, ChildPatch, VChild, VNode } from "./type";
 
-const zip = (
-  xs: any[] | NodeListOf<ChildNode>,
-  ys: any[] | NodeListOf<ChildNode>
-) => {
-  const zipped = [];
-  for (let i = 0; i < Math.max(xs?.length, ys?.length); i++) {
-    zipped.push([xs[i], ys[i]]);
-  }
-  return zipped;
-};
 const diffAttrs = (oldAttrs: Attrs, newAttrs: Attrs) => {
   const patches: AdditionalPatch[] = [];
   const isCompare = deepCompare(oldAttrs, newAttrs);
@@ -20,7 +10,7 @@ const diffAttrs = (oldAttrs: Attrs, newAttrs: Attrs) => {
     // set new attributes
     for (const [k, v] of Object.entries(newAttrs)) {
       patches.push(($node: HTMLElement) => {
-        if (k === "on") {
+        if (k === "on" || k === "props") {
         } else {
           $node.setAttribute(k, v);
         }
@@ -55,7 +45,7 @@ const diffChildren = (oldVChildren: VChild[], newVChildren: VChild[]) => {
   });
 
   const additionalPatches: AdditionalPatch[] = [];
-  if(newVChildren) {
+  if (newVChildren) {
     for (const additionalVChild of newVChildren.slice(oldVChildren.length)) {
       additionalPatches.push(($node: HTMLElement) => {
         $node.appendChild(render(additionalVChild as VNode));
@@ -68,7 +58,7 @@ const diffChildren = (oldVChildren: VChild[], newVChildren: VChild[]) => {
       try {
         patch(child);
       } catch {
-        console.log(zip(childPatches, $parent?.childNodes))
+        console.log(zip(childPatches, $parent?.childNodes));
       }
     }
 
@@ -92,7 +82,7 @@ export const diff = (vOldNode: VNode, vNewNode: VNode) => {
     if (vOldNode !== vNewNode) {
       return ($node: HTMLElement) => {
         const $newNode = render(vNewNode);
-          $node.replaceWith($newNode);
+        $node.replaceWith($newNode);
         return $newNode;
       };
     } else {

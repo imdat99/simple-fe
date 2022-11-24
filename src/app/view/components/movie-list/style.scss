@@ -1,0 +1,79 @@
+.title-list {
+  .poster-container {
+    width: 100%;
+    .poster-img {
+      display: flex;
+      margin: auto;
+      justify-content: center;
+      align-items: center;
+      // height: 240px;
+      background-color: var(--second-background-color);
+      overflow: hidden;
+      justify-content: center;
+      cursor: pointer;
+      img {
+        flex-shrink: 0;
+        width: auto;
+        height: 100%;
+      }
+    }
+    .poster-name {
+      height: 30px;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: normal;
+      margin-bottom: 20px;
+    }
+    margin-bottom: 1rem;
+  }
+}
+
+.poster-img {
+  height: 242px;
+}
+
+@media (min-width: 420px) {
+  .poster-img {
+    height: 343px;
+  }
+}
+@media (min-width: 576px) {
+  .poster-img {
+    height: 343px;
+  }
+}
+@media (min-width: 768px) {
+  .poster-img {
+    height: 300px;
+  }
+}
+@media (min-width: 992px) {
+  .poster-img {
+    height: 420px;
+  }
+}
+@media (min-width: 1200px) {
+  .poster-img {
+    height: 280px;
+  }
+  .col-xl\.20 {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+}
+@media (min-width: 1400px) {
+  .poster-img {
+    height: 343px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .title-list {
+    ul {
+      .poster-item {
+        max-width: 48%;
+        flex: 0 0 48%;
+      }
+    }
+  }
+}

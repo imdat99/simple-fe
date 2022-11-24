@@ -1,4 +1,5 @@
 @use "./var" as *;
+// @import "./grid.scss";
 .ps {
   height: 100%;
 }
@@ -290,11 +291,15 @@ header {
   height: 50px;
   border-radius: 50%;
   border: 3px solid rgba(255, 255, 255, 0.308);
-  animation: spin 1.0s linear infinite;
+  animation: spin 1s linear infinite;
   border-bottom-color: #d30000;
 }
 
 @keyframes spin {
-  from {transform: rotate(0);}
-  to {transform: rotate(360deg);}
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

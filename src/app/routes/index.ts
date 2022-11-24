@@ -1,7 +1,7 @@
 import { NotFound } from "@app/view/pages/404";
-import Router from "vanilla-router";
+import { Router, VRoute } from "@core/router";
 
-const appRoute = [
+const appRoute: VRoute[] = [
   {
     path: "/",
     redirectTo: "/home",
@@ -39,9 +39,8 @@ const appRoute = [
 export const router = new Router({
   mode: "history",
   root: "/",
-  page404: function (_path) {
+  notFound: function (_path) {
     document.querySelector("my-app")!.replaceWith(new NotFound());
   },
 });
-router.addUriListener();
 export default appRoute;
