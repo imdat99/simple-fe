@@ -43,7 +43,6 @@ export class AppSearch extends AppElement {
             <button
               class="btn btn-outline-secondary"
               type="button"
-              id="button-addon2"
             >
               <i class="fa-solid fa-magnifying-glass"></i>
             </button>

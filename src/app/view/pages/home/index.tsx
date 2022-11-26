@@ -1,6 +1,6 @@
-import appQuery from "@app/utils/config/axios.config";
+import appClient from "@app/utils/client";
 import { LoadingScren } from "@app/view/components/fallback";
-import { define, AppElement, h } from "@core/index";
+import { AppElement, define, h } from "@core/index";
 
 @define("home-page")
 export class HomePage extends AppElement {
@@ -34,11 +34,14 @@ export class HomePage extends AppElement {
   }
 
   getData() {
-    appQuery.call(this, {
-      method: "GET",
-      url: "/homePage/getHome",
-      params: this.data.params,
-    });
+    // appQuery.call(this, {
+    //   method: "GET",
+    //   url: "/homePage/getHome",
+    //   params: this.data.params,
+    // });
+    appClient.get('https://jsonplaceholder.typicode.com/todos?_limit=10&_page=1').then(res => {
+      console.log(res)
+    })
   }
 
   view() {
@@ -48,7 +51,7 @@ export class HomePage extends AppElement {
           on={{
             click: () => {
               this.data.params.page += 1;
-              // console.log("aaa");
+              // 
             },
           }}>
           ahihi
@@ -61,7 +64,7 @@ export class HomePage extends AppElement {
           }}>
           Show
         </button>
-        <p>{this.data.resData?.data.searchKeyWord}</p>
+        {/* <p>{this.data.resData?.data.searchKeyWord}</p> */}
         {this.data.show && <LoadingScren />}
         {this.data.loading && <div class="spinner"></div>}
       </div>

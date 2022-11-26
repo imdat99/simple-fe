@@ -2,6 +2,11 @@
   .poster-container {
     width: 100%;
     .poster-img {
+      &::after {
+        position: absolute;
+        z-index: 0;
+        content: "Đang tải...";
+      }
       display: flex;
       margin: auto;
       justify-content: center;
@@ -12,6 +17,7 @@
       justify-content: center;
       cursor: pointer;
       img {
+        z-index: 1;
         flex-shrink: 0;
         width: auto;
         height: 100%;

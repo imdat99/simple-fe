@@ -41,6 +41,14 @@ fall-back {
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+  &::after {
+    content: attr(data-loading);
+    position: absolute;
+    bottom: -65px;
+    right: -60px;
+    width: 100px;
+    text-align: center;
+  }
 }
 .ball-spin-fade-loader > div:nth-child(1) {
   top: 25px;
@@ -91,7 +99,7 @@ fall-back {
   animation: ball-spin-fade-loader 1s -0.12s infinite linear;
 }
 .ball-spin-fade-loader > div {
-  background-color: #f1f1f1;
+  background-color: var(--primary-color);
   width: 15px;
   height: 15px;
   border-radius: 100%;

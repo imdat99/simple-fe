@@ -19,8 +19,8 @@ export type ChangePropCallback = Map<any, (ov?: any, nv?: any) => void>;
 
 export type CustomElement = {
   _changePropCallbacks?: Record<string, string[]>;
-  connected?: () => void;
-  disconnected?: () => void;
+  connected?: (id?: string) => void;
+  disconnected?: (id?: string) => void;
   view: () => VNode;
   data: Record<string, unknown>;
   stateData: () => Record<string, any>;

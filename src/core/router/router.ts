@@ -12,10 +12,12 @@ export class Router {
     this.routes = [];
     this.root = root === "/" ? "/" : "/" + this._trimSlashes(root!) + "/";
     this.notFound = notFound || defaultNotFound;
+    this.addUriListener.call(this);
   }
   mode;
   routes: VRoute[];
   root;
+  private currentRoute = "";
   notFound;
 
   add(newRoute: Omit<VRoute, "rule">) {
@@ -26,8 +28,16 @@ export class Router {
   }
 
   navigateTo(route: string) {
-    route = route ? route : "";
-    this.findRoute(route);
+    if (route !== this.currentRoute) {
+      route = route ? route : "";
+      const found = this._findRoute.call(this, route);
+      if (found.success && found.matchRoute) {
+        found.matchRoute.handler(found.params);
+        this.location(route);
+      } else {
+        this.notFound([route]);
+      }
+    }
   }
 
   private _trimSlashes(path: string) {
@@ -37,7 +47,7 @@ export class Router {
     return path.toString().replace(/\/$/, "").replace(/^\//, "");
   }
 
-  findRoute(route: string) {
+  private _findRoute(route: string) {
     const params: string[] = [];
     const matchRoute = this.routes.find((item) => route.match(item.rule));
     if (matchRoute) {
@@ -50,12 +60,51 @@ export class Router {
           params.push(param);
         }
       }
-      this.location(route);
-      matchRoute.handler(params);
+      // this.currentRoute = route;
+      // matchRoute.handler(params);
+      // this.location(route);
+      return {
+        success: true,
+        matchRoute,
+        params,
+      };
     } else {
-      this.notFound([route]);
+      return {
+        success: false,
+        matchRoute: undefined,
+        params,
+      };
+      // this.notFound([route]);
     }
   }
+
+  private _processUri() {
+    const fragment = "/" + this._getFragment();
+    this.currentRoute = fragment;
+    const found = this._findRoute.call(this, fragment);
+    if (found.success && found.matchRoute) {
+      found.matchRoute.handler(found.params);
+    } else {
+      this.notFound([fragment]);
+    }
+  }
+
+  private _getFragment() {
+    var fragment = decodeURI(window.location.pathname);
+    if (this.root !== "/") {
+      fragment = fragment.replace(this.root, "");
+    }
+    return this._trimSlashes(fragment);
+  }
+
+  private addUriListener() {
+    window.onpopstate = this._processUri.bind(this);
+    document.addEventListener("DOMContentLoaded", () => {
+      this.navigateTo(window.location.pathname);
+    });
+    return this;
+  }
+
   location(route: string) {
     if (this.mode === "history") {
       history.pushState(null, "", this.root + this._trimSlashes(route));

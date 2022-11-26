@@ -10,7 +10,17 @@ export class AppNav extends AppElement {
   }
   connected() {
     this.data.dark = localStorage.getItem("dark") === "true";
-    console.log(this.props);
+    document.addEventListener('click', this.handleClickOutside.bind(this), true);
+  }
+
+  disconnected() {
+    document.removeEventListener('click', this.handleClickOutside.bind(this), true);
+  }
+
+  handleClickOutside(event: MouseEvent) {
+    if(!this.contains(event.target as Node)) {
+      this.data.toggle = false
+    }
   }
 
   data = {
@@ -31,6 +41,7 @@ export class AppNav extends AppElement {
       localStorage.setItem(property, String(this.data[property]));
     }
   }
+  
   view() {
     return (
       <nav class="navbar navbar-expand-md" aria-label="Fourth navbar example">

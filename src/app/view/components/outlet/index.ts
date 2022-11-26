@@ -14,9 +14,6 @@ export class AppOutlet extends HTMLElement {
   private _fallBack = new FallBack();
   private _notfound = new NotFound();
   connected() {
-    document.addEventListener("DOMContentLoaded", () => {
-      router.navigateTo(window.location.pathname);
-    });
     appRoute.forEach((item) => {
       router.add({
         name: item.name || "",
