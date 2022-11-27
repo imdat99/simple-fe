@@ -1,0 +1,10 @@
+.husky
+.git*
+node_modules
+Dockerfile
+.dockerignore
+package-lock.json
+Procfile
+*.md
+.prettierrc
+*.env*
