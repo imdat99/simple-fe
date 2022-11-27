@@ -9,21 +9,28 @@ const renderElem = (Vel: VNode) => {
   const $el = document.createElement(tagName!);
 
   // set attributes
-  for (const [k, v] of Object.entries(attrs!)) {
-    if (k === "on") {
-      for (const [event, handler] of Object.entries(v || {})) {
-        if (typeof handler === "function") {
-          $el.addEventListener(event, handler as EventListener, false);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    switch (k) {
+      case "on":
+        for (const [event, handler] of Object.entries(v || {})) {
+          if (typeof handler === "function") {
+            $el.addEventListener(event, handler as EventListener, false);
+          }
         }
-      }
-    } else if (k === "props") {
-    } else {
-      $el.setAttribute(k, v);
+        break;
+      case "props":
+        break;
+      case "html":
+        $el.replaceChildren(v);
+        break;
+      default:
+        $el.setAttribute(k, v);
+        break;
     }
   }
 
   // set children
-  for (const child of children!) {
+  for (const child of children || []) {
     const $child = render(child as VNode);
     if ($child) $el.appendChild($child);
   }
@@ -32,8 +39,8 @@ const renderElem = (Vel: VNode) => {
 };
 
 export const render = (vNode: VNode): HTMLElement => {
-  if (typeof vNode === "string") {
-    return document.createTextNode(vNode) as any;
+  if (typeof vNode === "string" || typeof vNode === "number") {
+    return document.createTextNode(String(vNode)) as any;
   }
 
   return renderElem(vNode);

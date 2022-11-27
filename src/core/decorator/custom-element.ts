@@ -68,12 +68,10 @@ export function define(tagname: string) {
     const compnentId = randomId(constructor.name);
 
     const Generated = class extends constructor {
-      private $rootEl!: HTMLElement | Text;
       private $oldView!: VNode;
-      private $id = compnentId;
+      $id = compnentId;
       connectedCallback() {
         if (this.stateData) {
-          
           this.data = this.stateData();
         }
         if (this.view) {

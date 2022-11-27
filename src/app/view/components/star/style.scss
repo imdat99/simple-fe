@@ -1,0 +1,126 @@
+.btn-control {
+  button {
+    background: var(--close-color);
+    color: var(--main-text-color);
+    padding: 5px 10px;
+    border-radius: 5px;
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+}
+.star-list {
+  .star-container {
+    display: flex;
+    gap: 10px;
+    width: 98%;
+    /*background: red;*/
+    margin: auto;
+    align-items: center;
+    overflow-x: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    div[data] {
+      position: relative;
+      transition: all 0.5s linear;
+      a {
+        -webkit-user-drag: none;
+      }
+    }
+    .star-inner {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      .star-img {
+        // &::after {
+        //   position: absolute;
+        //   z-index: 0;
+        //   content: "Đang tải...";
+        // }
+        display: flex;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+        // height: 240px;
+        background-color: var(--second-background-color);
+        border-radius: 100%;
+        overflow: hidden;
+        justify-content: center;
+        cursor: pointer;
+        img {
+          -webkit-user-drag: none;
+          z-index: 1;
+          flex-shrink: 0;
+          width: 100%;
+          height: 100%;
+        }
+      }
+      text-align: center;
+      .star-name {
+        display: block;
+        height: 30px;
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: normal;
+        margin-bottom: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.star-img {
+  width: 100px;
+  height: 100px;
+}
+
+@media (min-width: 420px) {
+  .star-img {
+    width: 100px;
+    height: 100px;
+  }
+}
+@media (min-width: 576px) {
+  .star-img {
+    width: 110px;
+    height: 110px;
+  }
+}
+@media (min-width: 768px) {
+  .star-img {
+    width: 110px;
+    height: 110px;
+  }
+}
+@media (min-width: 992px) {
+  .star-img {
+    width: 110px;
+    height: 110px;
+  }
+}
+@media (min-width: 1200px) {
+  .star-img {
+    width: 110px;
+    height: 110px;
+  }
+}
+@media (min-width: 1400px) {
+  .star-img {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .title-list {
+    ul {
+      .star-item {
+        max-width: 48%;
+        flex: 0 0 48%;
+      }
+    }
+  }
+}

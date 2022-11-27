@@ -1,7 +1,7 @@
 import { NotFound } from "@app/view/pages/404";
 import { Router, VRoute } from "@core/router";
 
-const appRoute: VRoute[] = [
+const appRoute: (VRoute & { navigationId?: number })[] = [
   {
     path: "/",
     redirectTo: "/home",
@@ -9,26 +9,34 @@ const appRoute: VRoute[] = [
   {
     name: "Trang chủ",
     path: "/home",
+    navigationId: 287,
     component: () => import("@app/view/pages/home"),
   },
   {
     name: "Phim hàn",
     path: "/k-drama",
-    component: () => import("@app/view/pages/movie"),
+    navigationId: 294,
+    component: () => import("@app/view/pages/home"),
   },
   {
-    name: "Phim lẻ",
+    name: "Phim chiếu rạp",
     path: "/movie",
-    component: () => import("@app/view/pages/movie"),
+    navigationId: 335,
+    component: () => import("@app/view/pages/home"),
   },
   {
     path: "/movie/(:any)",
     component: () => import("@app/view/pages/movie"),
   },
   {
+    path: "/album/(:any)",
+    component: () => import("@app/view/pages/album"),
+  },
+  {
     name: "Anime",
     path: "/anime",
-    component: () => import("@app/view/pages/movie"),
+    navigationId: 362,
+    component: () => import("@app/view/pages/home"),
   },
   {
     path: "/search",

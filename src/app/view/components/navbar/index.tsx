@@ -10,16 +10,24 @@ export class AppNav extends AppElement {
   }
   connected() {
     this.data.dark = localStorage.getItem("dark") === "true";
-    document.addEventListener('click', this.handleClickOutside.bind(this), true);
+    document.addEventListener(
+      "click",
+      this.handleClickOutside.bind(this),
+      true
+    );
   }
 
   disconnected() {
-    document.removeEventListener('click', this.handleClickOutside.bind(this), true);
+    document.removeEventListener(
+      "click",
+      this.handleClickOutside.bind(this),
+      true
+    );
   }
 
   handleClickOutside(event: MouseEvent) {
-    if(!this.contains(event.target as Node)) {
-      this.data.toggle = false
+    if (!this.contains(event.target as Node)) {
+      this.data.toggle = false;
     }
   }
 
@@ -41,7 +49,7 @@ export class AppNav extends AppElement {
       localStorage.setItem(property, String(this.data[property]));
     }
   }
-  
+
   view() {
     return (
       <nav class="navbar navbar-expand-md" aria-label="Fourth navbar example">
@@ -88,7 +96,7 @@ export class AppNav extends AppElement {
                     <input
                       class="form-check-input btn-toggle position-relative cursor-pointer"
                       type="checkbox"
-                      checked={this.data.dark}
+                      checked={String(this.data.dark)}
                     />
                   </div>
                 </div>

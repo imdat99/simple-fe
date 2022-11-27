@@ -1,4 +1,4 @@
-import { CustomElement } from "@core/type";
+// import { CustomElement } from "@core/type";
 
 export function Watch(...args: string[]) {
   // console.log(args);
@@ -7,7 +7,7 @@ export function Watch(...args: string[]) {
     propertyKey: string,
     descriptior: PropertyDescriptor
   ) {
-    const value = descriptior.value;
+    // const value = descriptior.value;
     args.forEach((item) => {
       console.log(target._changePropCallbacks, item);
     });

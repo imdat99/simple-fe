@@ -130,7 +130,7 @@ footer {
 @keyframes fadeIn {
   0% {
     opacity: 0;
-    transform: scale(0, 0);
+    // transform: scale(0, 0);
   }
   100% {
     opacity: 1;
@@ -140,7 +140,7 @@ footer {
 @-moz-keyframes fadeIn {
   0% {
     opacity: 0;
-    transform: scale(0);
+    // transform: scale(0);
   }
   100% {
     opacity: 1;
@@ -150,7 +150,7 @@ footer {
 @-webkit-keyframes fadeIn {
   0% {
     opacity: 0;
-    transform: scale(0);
+    // transform: scale(0);
   }
   100% {
     opacity: 1;
@@ -304,5 +304,15 @@ header {
   }
 }
 .form-control {
-  color: var(--main-text-color)!important;
+  color: var(--main-text-color) !important;
+}
+.border-bottom {
+  border-color: var(--close-color) !important;
+}
+.clear-input {
+  cursor: pointer;
+  right: 65px;
+  bottom: 12px;
+  font-size: 1.5rem;
+  z-index: 100;
 }

@@ -8,7 +8,7 @@ export type H = (
 ) => VNode;
 export type Attrs = Record<string, any>;
 export interface VNode {
-  tagName?: string;
+  tagName?: string | Function;
   attrs: Attrs;
   children: VChild[];
 }
@@ -18,7 +18,6 @@ export type AdditionalPatch = (e: HTMLElement) => HTMLElement;
 export type ChangePropCallback = Map<any, (ov?: any, nv?: any) => void>;
 
 export type CustomElement = {
-  _changePropCallbacks?: Record<string, string[]>;
   connected?: (id?: string) => void;
   disconnected?: (id?: string) => void;
   view: () => VNode;

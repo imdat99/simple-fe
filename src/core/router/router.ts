@@ -1,4 +1,5 @@
 import { zip } from "@core/helper";
+import { buildQueryString, parseParams } from "./helper";
 import { VRoute } from "./route";
 import { VRouter } from "./type";
 
@@ -28,14 +29,16 @@ export class Router {
   }
 
   navigateTo(route: string) {
+    const searchParam = route.split("?");
+    route = searchParam[0];
     if (route !== this.currentRoute) {
       route = route ? route : "";
       const found = this._findRoute.call(this, route);
       if (found.success && found.matchRoute) {
+        this.location(searchParam.join("?"));
         found.matchRoute.handler(found.params);
-        this.location(route);
       } else {
-        this.notFound([route]);
+        this.notFound(searchParam);
       }
     }
   }
@@ -51,7 +54,6 @@ export class Router {
     const params: string[] = [];
     const matchRoute = this.routes.find((item) => route.match(item.rule));
     if (matchRoute) {
-      // console.log(route, matchRoute);
       for (const [param, paramKey] of zip(
         route.split("/"),
         matchRoute.path.split("/")
@@ -60,9 +62,6 @@ export class Router {
           params.push(param);
         }
       }
-      // this.currentRoute = route;
-      // matchRoute.handler(params);
-      // this.location(route);
       return {
         success: true,
         matchRoute,
@@ -74,7 +73,6 @@ export class Router {
         matchRoute: undefined,
         params,
       };
-      // this.notFound([route]);
     }
   }
 
@@ -100,12 +98,35 @@ export class Router {
   private addUriListener() {
     window.onpopstate = this._processUri.bind(this);
     document.addEventListener("DOMContentLoaded", () => {
-      this.navigateTo(window.location.pathname);
+      const { pathname, search } = window.location;
+      this.navigateTo(pathname + search);
     });
     return this;
   }
 
+  params(): [
+    (fn: (o: Record<string, any>) => void) => void,
+    (o: Record<string, any>) => void
+  ] {
+    const searchObj = parseParams(window.location.search);
+    return [
+      (fn: (o: Record<string, any>) => void) => {
+        fn(searchObj);
+      },
+      (params: Record<string, any>) => {
+        const newurl =
+          window.location.protocol +
+          "//" +
+          window.location.host +
+          window.location.pathname +
+          buildQueryString(params);
+
+        window.history.pushState({ path: newurl }, "", newurl);
+      },
+    ];
+  }
   location(route: string) {
+    console.log("route", route);
     if (this.mode === "history") {
       history.pushState(null, "", this.root + this._trimSlashes(route));
     } else {

@@ -2,17 +2,36 @@ import { zip, deepCompare } from "./helper";
 import { render } from "./render";
 import { AdditionalPatch, Attrs, ChildPatch, VChild, VNode } from "./type";
 
-const diffAttrs = (oldAttrs: Attrs, newAttrs: Attrs) => {
+const diffAttrs = (oldAttrs: Attrs, newAttrs: Attrs, newNode?: VNode) => {
   const patches: AdditionalPatch[] = [];
   const isCompare = deepCompare(oldAttrs, newAttrs);
 
   if (!isCompare) {
-    // set new attributes
     for (const [k, v] of Object.entries(newAttrs)) {
       patches.push(($node: HTMLElement) => {
-        if (k === "on" || k === "props") {
-        } else {
-          $node.setAttribute(k, v);
+        switch (k) {
+          case "on":
+            break;
+          case "props":
+            if (typeof newNode?.tagName === "function") {
+              $node.replaceChildren(
+                render(
+                  newNode.tagName({ props: v, children: newNode.children })
+                )
+              );
+            }
+            break;
+          case "html":
+            $node.replaceChildren(v);
+            break;
+          default:
+            if (k === "value" && v === "") {
+              ($node as HTMLInputElement).value = "";
+              $node.removeAttribute(k);
+            } else {
+              $node.setAttribute(k, v);
+            }
+            break;
         }
         return $node;
       });
@@ -58,7 +77,7 @@ const diffChildren = (oldVChildren: VChild[], newVChildren: VChild[]) => {
       try {
         patch(child);
       } catch {
-        console.log(zip(childPatches, $parent?.childNodes));
+        // console.log(zip(childPatches, $parent?.childNodes));
       }
     }
 
@@ -98,7 +117,7 @@ export const diff = (vOldNode: VNode, vNewNode: VNode) => {
     };
   }
 
-  const patchAttrs = diffAttrs(vOldNode?.attrs, vNewNode?.attrs);
+  const patchAttrs = diffAttrs(vOldNode?.attrs, vNewNode?.attrs, vNewNode);
   const patchChildren = diffChildren(vOldNode?.children, vNewNode?.children);
 
   return ($node: HTMLElement) => {

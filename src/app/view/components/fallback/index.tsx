@@ -4,8 +4,12 @@ import "./fallback.scss";
 
 export const LoadingScren = () => (
   <div class="loader">
-    <div class="loader-inner ball-spin-fade-loader" data-loading="Đang tải...">
-      {Array.from({ length: 8 }, () => h("div"))}
+    <div class="loader-inner" data-loading="Đang tải...">
+      <div class="ball-spin-fade-loader">
+        {Array.from({ length: 4 }, () => (
+          <div class="loader-item" />
+        ))}
+      </div>
     </div>
   </div>
 );

@@ -82,6 +82,9 @@ http://ga-mobile-api.juzhangvideo.com/cms/app/search/v1/searchLeaderboard
 // media:
 // http://ga-mobile-api.juzhangvideo.com/juzhangvideo/media/previewInfo?category=1&contentId=7135&definition=GROOT_SD&episodeId=54402
 
+// album:
+//http://ga-mobile-api.juzhangvideo.com/cms/app/album/detail?id=694&page=0&size=12
+
 // Host: ga-mobile-api.juzhangvideo.com
 // aesKey: D6SFgFnpMZgxVMBlUaPUOzysajPR06Oy6ajJBx6/fOxss8v37dKAx03Y2pO7HKWLdHJ/QjxHfaLdgi7qoOAetTGWc/uhP4JaoGOj2DIWa/BUfg/SytudAelKwN82ZcSNeF7IhtyrLSXdsu5rYAhnswjc6NrZ9LNfqxOE0GKaDK4=
 // areaCode: VN

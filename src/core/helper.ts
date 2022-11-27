@@ -9,7 +9,7 @@ export const zip = (
   return zipped;
 };
 
-export function deepCompare(..._Args: Record<string, unknown>[]) {
+export function deepCompare(..._Args: (Record<string, unknown> | any[])[]) {
   let i: any, l: any, leftChain: any, rightChain: any;
 
   function compare2Objects(x: any, y: any) {
@@ -143,28 +143,12 @@ export function memo(fun: Function) {
   let cache: any;
   let cachefn: any;
   return function (n: any) {
-    // console.log("n", n);
-    // console.log("cache", isEqual(n, cache));
-    // console.log("n", n, cache);
-    // const diff = reduce(
-    //   cache,
-    //   function (result, value, key) {
-    //     return isEqual(value, n[key])
-    //       ? result
-    //       : result.concat({ [key]: cache[key] });
-    //   },
-    //   []
-    // );
-    // console.log("dif", diff);
-
     if (deepCompare(n, cache)) {
-      // console.log("đ", cache);
       return cachefn;
     } else {
       const result = fun(n);
       cache = n;
       cachefn = result;
-      // console.log("res", result);
       return result;
     }
   };
