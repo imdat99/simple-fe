@@ -33,6 +33,10 @@ const appRoute: (VRoute & { navigationId?: number })[] = [
     component: () => import("@app/view/pages/album"),
   },
   {
+    path: "/watch/(:any)",
+    component: () => import("@app/view/pages/watch"),
+  },
+  {
     name: "Anime",
     path: "/anime",
     navigationId: 362,

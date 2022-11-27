@@ -119,14 +119,13 @@ export class Router {
           "//" +
           window.location.host +
           window.location.pathname +
-          buildQueryString(params);
+          buildQueryString({ ...searchObj, ...params });
 
         window.history.pushState({ path: newurl }, "", newurl);
       },
     ];
   }
   location(route: string) {
-    console.log("route", route);
     if (this.mode === "history") {
       history.pushState(null, "", this.root + this._trimSlashes(route));
     } else {

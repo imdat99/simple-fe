@@ -23,7 +23,6 @@ export class AppOutlet extends HTMLElement {
         handler: (params = []) => {
           const _compoent = this._componentMap.get(item.path);
           if (this._oldPath == item.path) {
-            console.log("path", item.path);
             if (!deepCompare(this._oldParams, params)) {
               _compoent.params = params;
               this.replaceChildren(_compoent);
@@ -56,7 +55,6 @@ export class AppOutlet extends HTMLElement {
             this._oldPath = item.path;
           }
           if (item.redirectTo) {
-            console.log("aaa");
             router.navigateTo(item.redirectTo);
           }
         },

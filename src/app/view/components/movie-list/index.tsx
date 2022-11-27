@@ -1,3 +1,4 @@
+import { jumpLink } from "@app/utils/helper";
 import { h, memo } from "@core/index";
 import "./style.scss";
 const ListMovie = memo(({ props }: { props: any }) => {
@@ -7,11 +8,7 @@ const ListMovie = memo(({ props }: { props: any }) => {
         {props?.map((item: any) => {
           return (
             <div class="col-6 col-xs-6 col-sm-6 col-md-4 col-lg-4 col-xl.20">
-              <app-link
-                to={`/movie/${item.id || item.contentId}c${
-                  item.category || ""
-                }`}
-              >
+              <app-link to={`/movie/${jumpLink(item)}`}>
                 <div class="poster-container">
                   <div class="poster-img">
                     <img

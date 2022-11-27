@@ -1,3 +1,4 @@
+import { router } from "@app/routes";
 import appClient from "@app/utils/client";
 import { getLazyImg } from "@app/utils/helper/lazyimg";
 import ListMovie from "@app/view/components/movie-list";
@@ -32,8 +33,10 @@ export class AppMovie extends AppElement {
   }
 
   connected() {
-    this.data.params.id = this.params[0].split("c")[0];
-    this.data.params.category = this.params[0].split("c")[1] || 0;
+    router.params()[0]((params) => {
+      this.data.params.id = params.id;
+      this.data.params.category = params.type || 0;
+    });
     this.getMovieDetail();
   }
 
@@ -46,7 +49,6 @@ export class AppMovie extends AppElement {
           this.data.isEnd = true;
         }
         this.data.resData = res.data;
-        console.log(res.data);
       })
       .finally(() => {
         this.data.loading = false;
@@ -65,8 +67,9 @@ export class AppMovie extends AppElement {
       areaNameList,
       introduction,
       starList,
-      likeList,
+      likeList = [],
     } = this.data.resData || {};
+    const { pathname, search } = window.location;
     return this.data.isEnd ? (
       <span>không còn dữ liệu</span>
     ) : (
@@ -80,15 +83,17 @@ export class AppMovie extends AppElement {
             <div class="tt-detail">
               <div class="poster-column">
                 <img src={coverVerticalUrl} alt="" />
-                <button
-                  href="#"
+                <app-link
+                  to={(pathname + search + "&ep=1").replace(
+                    "/movie/",
+                    "/watch/"
+                  )}
                   class="watch-btn"
-                  // onClick={() => {
-                  //   history.push(`/watch/${type}/${id}`);
-                  // }}
                 >
-                  <i class="fa-solid fa-play"></i> XEM PHIM
-                </button>
+                  <span>
+                    <i class="fa-solid fa-play"></i> XEM PHIM
+                  </span>
+                </app-link>
               </div>
               <div class="main-column">
                 <h1 class="maintitle">{name}</h1>
@@ -177,7 +182,6 @@ export class AppMovie extends AppElement {
                     Cùng thể loại
                   </strong>
                   <ListMovie props={likeList} />
-                  {/* <Trailer id={id} type={type} /> */}
                 </div>
               </div>
             </div>

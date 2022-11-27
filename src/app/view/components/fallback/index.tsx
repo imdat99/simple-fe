@@ -2,7 +2,7 @@ import { define } from "@core/decorator";
 import { h } from "@core/render";
 import "./fallback.scss";
 
-export const LoadingScren = () => (
+export const LoadingScren = ({ children }: { children?: any }) => (
   <div class="loader">
     <div class="loader-inner" data-loading="Đang tải...">
       <div class="ball-spin-fade-loader">
@@ -11,6 +11,7 @@ export const LoadingScren = () => (
         ))}
       </div>
     </div>
+    {children}
   </div>
 );
 @define("fall-back")

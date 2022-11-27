@@ -1,7 +1,4 @@
-// import { h, memo } from "@core/index";
-// import "./style.scss";
-
-import { ID_REGEX } from "@app/utils/constant";
+import { jumpLink } from "@app/utils/helper";
 import { AppElement, define, h } from "@core/index";
 import "./style.scss";
 
@@ -82,9 +79,7 @@ class MovieStar extends AppElement {
             {this.props.list?.map((item: any) => {
               return (
                 <div data={this.$id}>
-                  <app-link
-                    to={`/album/${item.jumpAddress.match(ID_REGEX)[1]}`}
-                  >
+                  <app-link to={`/album/${jumpLink(item)}`}>
                     <div class="star-inner">
                       <div class="star-img">
                         <img

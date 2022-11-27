@@ -1,3 +1,4 @@
+import { jumpLink } from "@app/utils/helper";
 import { AppElement, define, h, memo } from "@core/index";
 import "./style.scss";
 
@@ -60,19 +61,24 @@ class AppBanner extends AppElement {
           <div class="carousel-inner">
             {this.props.map((item: any) => (
               <div class="carousel-item fade-in">
-                <div class="banner-img position-relative">
-                  <img
-                    src={item?.imageUrl || ""}
-                    class="position-absolute"
-                    alt="..."
-                  />
-                </div>
-                <div class="carousel-caption d-none d-md-block ">
-                  <h5 class="h4">{item?.title}</h5>
+                <app-link to={`/movie/${jumpLink(item)}`}>
                   <p>
-                    Some representative placeholder content for the first slide.
+                    <div class="banner-img position-relative">
+                      <img
+                        src={item?.imageUrl || ""}
+                        class="position-absolute"
+                        alt="..."
+                      />
+                    </div>
+                    <div class="carousel-caption d-none d-md-block ">
+                      <h5 class="h4">{item?.title}</h5>
+                      <p>
+                        Some representative placeholder content for the first
+                        slide.
+                      </p>
+                    </div>
                   </p>
-                </div>
+                </app-link>
               </div>
             ))}
           </div>

@@ -1,3 +1,4 @@
+import { router } from "@app/routes";
 import appClient from "@app/utils/client";
 import { getLazyImg } from "@app/utils/helper/lazyimg";
 import { LoadingScren } from "@app/view/components/fallback";
@@ -11,9 +12,12 @@ export class AlbumPage extends AppElement {
   }
 
   connected() {
-    this.getData();
     this.listenScroll();
     console.log(this.params);
+    router.params()[0]((params) => {
+      this.data.params.id = params.id;
+    });
+    this.getData();
   }
 
   stateData() {
@@ -26,7 +30,6 @@ export class AlbumPage extends AppElement {
       params: {
         page: 0,
         size: 12,
-        id: this.params[0],
       },
     };
   }
@@ -48,7 +51,6 @@ export class AlbumPage extends AppElement {
     if (property === "params.page" && !this.data.isEnd) {
       this.getData();
     }
-    console.log(property);
   }
 
   getData() {
@@ -62,7 +64,6 @@ export class AlbumPage extends AppElement {
         } else {
           this.data.isEnd = true;
         }
-        console.log(res.data);
       })
       .finally(() => {
         this.data.loading = false;
