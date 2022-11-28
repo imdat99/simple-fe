@@ -8,14 +8,12 @@ export default function player(options: Record<string, any>) {
     pip: true,
     autoSize: true,
     autoMini: true,
-    screenshot: true,
     setting: true,
     loop: true,
     flip: true,
     playbackRate: true,
     aspectRatio: true,
     fullscreen: true,
-    fullscreenWeb: true,
     subtitleOffset: true,
     miniProgressBar: true,
     mutex: true,
@@ -38,20 +36,7 @@ export default function player(options: Record<string, any>) {
         }
       },
     },
-    controls: [
-      {
-        position: "right",
-        html: "Control",
-        index: 1,
-        tooltip: "Control Tooltip",
-        style: {
-          marginRight: "20px",
-        },
-        click: function () {
-          console.info("You clicked on the custom control");
-        },
-      },
-    ],
+
     subtitle: {
       url:
         (
@@ -69,7 +54,11 @@ export default function player(options: Record<string, any>) {
       {
         width: 200,
         html: "Subtitle",
-        tooltip: "Bilingual",
+        tooltip:
+          (
+            subtitle.find((item: any) => item?.languageAbbr === "vi") ||
+            subtitle[0]
+          )?.language || "",
         icon: '<img width="22" heigth="22" src="https://artplayer.org/assets/img/subtitle.svg">',
         selector: [
           {
@@ -93,6 +82,20 @@ export default function player(options: Record<string, any>) {
             name: item.html,
           });
           return item.html;
+        },
+      },
+    ],
+    layers: [
+      {
+        html: '<img width="100" src="/logo.png">',
+        click: function () {
+          window.open("http://dat09.fun/home");
+        },
+        style: {
+          position: "absolute",
+          top: "20px",
+          right: "20px",
+          opacity: "0.75",
         },
       },
     ],

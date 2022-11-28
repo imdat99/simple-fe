@@ -55,7 +55,6 @@ const diffAttrs = (oldAttrs: Attrs, newAttrs: Attrs, newNode?: VNode) => {
 };
 
 const diffChildren = (oldVChildren: VChild[], newVChildren: VChild[]) => {
-  // console.log("oldVChildren", oldVChildren)
   const childPatches: ChildPatch[] = [];
   oldVChildren?.forEach((oldVChild, i) => {
     childPatches.push(
@@ -76,9 +75,7 @@ const diffChildren = (oldVChildren: VChild[], newVChildren: VChild[]) => {
     for (const [patch, child] of zip(childPatches, $parent?.childNodes)) {
       try {
         patch(child);
-      } catch {
-        // console.log(zip(childPatches, $parent?.childNodes));
-      }
+      } catch {}
     }
 
     for (const patch of additionalPatches) {

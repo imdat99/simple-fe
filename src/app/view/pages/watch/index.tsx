@@ -12,22 +12,29 @@ export class WatchMovie extends AppElement {
     super();
 
     this.hlsScript = document.createElement("script");
-    this.hlsScript.src = "https://cdn.jsdelivr.net/npm/hls.js@1";
-    this.hlsScript.async = true;
+    this.hlsScript.src =
+      "https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.5.14/hls.min.js";
+    this.hlsScript.async = false;
 
     this.artScript = document.createElement("script");
     this.artScript.src =
       "https://cdn.jsdelivr.net/npm/artplayer/dist/artplayer.js";
-    this.artScript.async = true;
+    this.artScript.async = false;
 
     document.head.appendChild(this.hlsScript);
     document.head.appendChild(this.artScript);
+  }
+
+  confirmLoaded() {
+    this.data.playerLoaded += 1;
   }
 
   hlsScript: HTMLScriptElement;
   artScript: HTMLScriptElement;
   artPlayer: any;
   connected() {
+    this.artScript.addEventListener("load", this.confirmLoaded.bind(this));
+    this.hlsScript.addEventListener("load", this.confirmLoaded.bind(this));
     router.params()[0]((params) => {
       this.data.params.id = params.id;
       this.data.params.category = params.type || 0;
@@ -38,6 +45,8 @@ export class WatchMovie extends AppElement {
 
   disconnected() {
     this.artPlayer?.destroy(false);
+    this.artScript.removeEventListener("load", this.confirmLoaded.bind(this));
+    this.hlsScript.removeEventListener("load", this.confirmLoaded.bind(this));
     this.artScript.remove();
     this.hlsScript.remove();
   }
@@ -48,6 +57,7 @@ export class WatchMovie extends AppElement {
       isEnd: false,
       resData: {},
       ep: 0,
+      playerLoaded: 0,
       params: {
         id: "",
         category: 0,
@@ -69,6 +79,9 @@ export class WatchMovie extends AppElement {
 
   watch(property: string) {
     if (property === "content") {
+      this.confirmLoaded();
+    }
+    if (property === "playerLoaded" && this.data.playerLoaded > 2) {
       this.player();
     }
     if (property === "ep") {
@@ -124,11 +137,48 @@ export class WatchMovie extends AppElement {
           )}
         </div>
         <div class="text-center">
-          Phim load chậm? <span>Xem hướng dẫn</span>
+          Phim không load được? hãy thử{" "}
+          <span
+            on={{
+              click: () => {
+                location.reload();
+              },
+            }}
+          >
+            Reload
+          </span>
+        </div>
+        <div class="text-center">
+          Phim load chậm?{" "}
+          <span
+            on={{
+              click: () => {
+                window.open(
+                  `https://www.google.com/search?q=${encodeURI(
+                    "Phim load chậm"
+                  )}`
+                );
+              },
+            }}
+          >
+            Xem hướng dẫn
+          </span>
         </div>
         <p class="text-center">
-          Phim không có tiếng / mất tiếng nhân vật / âm thanh bị rè?{" "}
-          <span>Xem hướng dẫn</span>
+          Phim không có tiếng / mất tiếng nhân vật / âm thanh bị rè?
+          <span
+            on={{
+              click: () => {
+                window.open(
+                  `https://www.google.com/search?q=${encodeURI(
+                    "Phim không có tiếng / mất tiếng nhân vật / âm thanh bị rè?"
+                  )}`
+                );
+              },
+            }}
+          >
+            Xem hướng dẫn
+          </span>
         </p>
         <div class="section">
           <div class="container">
@@ -212,7 +262,7 @@ export class WatchMovie extends AppElement {
                 <textarea
                   class="textarea"
                   rows="2"
-                  placeholder="Nhập bình luận..."
+                  placeholder="Nhập bình luận... (Phần này không chạy, để cho đẹp :v)"
                 ></textarea>
                 <button type="button" class="btn btn-outline-secondary">
                   Gửi

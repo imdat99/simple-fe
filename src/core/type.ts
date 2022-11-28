@@ -7,6 +7,8 @@ export type H = (
   ...c: VChild[] | any[]
 ) => VNode;
 export type Attrs = Record<string, any>;
+
+export type Node = VNode | string;
 export interface VNode {
   tagName?: string | Function;
   attrs: Attrs;

@@ -1,3 +1,4 @@
+import { toast } from "@app/view/components/toast";
 import { BASE_URL, LINK_REGEX } from "../constant";
 import { IQuery } from "../types";
 
@@ -34,18 +35,22 @@ class Client {
     url: string,
     params?: Record<string, any>
   ): Promise<R> {
-    return (await fetch(this._worker("GET", url, params)).then((response) =>
-      response.json()
-    )) as R;
+    return (await fetch(this._worker("GET", url, params))
+      .then((response) => response.json())
+      .catch((e) => {
+        toast({ title: "lỗi", content: e.message, type: "danger" });
+      })) as R;
   }
 
   public async post<T extends Record<string, any> = any, R = any>(
     url: string,
     data: T
   ): Promise<R> {
-    return (await fetch(this._worker("POST", url, undefined, data)).then(
-      (response) => response.json()
-    )) as R;
+    return (await fetch(this._worker("POST", url, undefined, data))
+      .then((response) => response.json())
+      .catch((e) => {
+        toast({ title: "lỗi", content: e.message, type: "danger" });
+      })) as R;
   }
 }
 
