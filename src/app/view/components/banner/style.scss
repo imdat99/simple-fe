@@ -1,0 +1,96 @@
+.carousel-content {
+  & > * {
+    transition: all 0.2s linear;
+  }
+  .banner-img {
+    // &::after {
+    //   position: absolute;
+    //   z-index: 0;
+    //   content: "Đang tải...";
+    // }
+    display: flex;
+    margin: auto;
+    align-items: center;
+    background-color: var(--second-background-color);
+    overflow: hidden;
+    justify-content: center;
+    cursor: pointer;
+    img {
+      // z-index: 1;
+      flex-shrink: 0;
+      width: 100%;
+      height: auto;
+    }
+  }
+  .carousel-caption {
+    text-align: center;
+    display: flex;
+    p,
+    h5 {
+      margin: auto;
+      width: fit-content;
+      padding: 5px;
+      background-color: rgba($color: #000000, $alpha: 0.45);
+    }
+  }
+}
+
+.banner-img {
+  height: 230px;
+  img {
+    bottom: -4rem !important;
+  }
+}
+
+@media (min-width: 420px) {
+  .banner-img {
+    height: 280px;
+    img {
+      bottom: -7rem !important;
+    }
+  }
+}
+@media (min-width: 576px) {
+  .banner-img {
+    height: 280px;
+    img {
+      bottom: -7rem !important;
+    }
+  }
+}
+@media (min-width: 768px) {
+  .banner-img {
+    height: 300px;
+    img {
+      bottom: -10rem !important;
+    }
+  }
+}
+@media (min-width: 992px) {
+  .banner-img {
+    height: 360px;
+    img {
+      bottom: -13rem !important;
+    }
+  }
+}
+@media (min-width: 1200px) {
+  .banner-img {
+    height: 380px;
+    img {
+      bottom: -16rem !important;
+    }
+  }
+  .col-xl\.20 {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+}
+@media (min-width: 1400px) {
+  .banner-img {
+    height: 500px;
+    img {
+      bottom: -16rem !important;
+    }
+  }
+}

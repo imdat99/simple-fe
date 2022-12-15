@@ -1,7 +1,18 @@
-export function deepCompare() {
-  let i, l, leftChain, rightChain;
+export const zip = (
+  xs: any[] | NodeListOf<ChildNode>,
+  ys: any[] | NodeListOf<ChildNode>
+) => {
+  const zipped = [];
+  for (let i = 0; i < Math.max(xs?.length, ys?.length); i++) {
+    zipped.push([xs[i], ys[i]]);
+  }
+  return zipped;
+};
 
-  function compare2Objects(x, y) {
+export function deepCompare(..._Args: (Record<string, unknown> | any[])[]) {
+  let i: any, l: any, leftChain: any, rightChain: any;
+
+  function compare2Objects(x: any, y: any) {
     let p;
 
     // remember that NaN === NaN returns false
@@ -126,4 +137,19 @@ export function deepCompare() {
   }
 
   return true;
+}
+
+export function memo(fun: Function) {
+  let cache: any;
+  let cachefn: any;
+  return function (n: any) {
+    if (deepCompare(n, cache)) {
+      return cachefn;
+    } else {
+      const result = fun(n);
+      cache = n;
+      cachefn = result;
+      return result;
+    }
+  };
 }

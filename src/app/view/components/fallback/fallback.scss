@@ -1,0 +1,108 @@
+fall-back {
+  position: relative;
+
+  height: calc(100vh - 58px - 248px);
+  width: 100%;
+  display: block;
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  font-family: "Source Sans Pro";
+}
+
+@keyframes loaderMove {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes loaderRotate {
+  to {
+    transform: rotate(405deg);
+  }
+}
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  .loader-inner {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: #1677ff;
+    font-size: 14px;
+    line-height: 1.5714285714285714;
+    list-style: none;
+    font-family: -apple-system, BlinkMacSystemFont, segoe ui, Roboto,
+      helvetica neue, Arial, noto sans, sans-serif, apple color emoji,
+      segoe ui emoji, segoe ui symbol, noto color emoji;
+    position: absolute;
+    // display: none;
+    text-align: center;
+    vertical-align: middle;
+    opacity: 1;
+    transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+
+    &::after {
+      content: attr(data-loading);
+      color: var(--primary-color);
+      position: absolute;
+      top: 2.5rem;
+      right: -2rem;
+      width: 100px;
+      text-align: center;
+    }
+
+    .ball-spin-fade-loader {
+      position: relative;
+      display: inline-block;
+      font-size: 20px;
+      width: 2.25rem;
+      height: 2.25rem;
+      transform: rotate(45deg);
+
+      animation-name: loaderRotate;
+      animation-duration: 1.2s;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+
+      .loader-item {
+        position: absolute;
+        display: block;
+        width: 15px;
+        height: 15px;
+        background-color: var(--primary-color);
+        border-radius: 100%;
+        transform: scale(0.75);
+        transform-origin: 50% 50%;
+        opacity: 0.3;
+        animation-name: loaderMove;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        animation-direction: alternate;
+
+        &:nth-child(1) {
+          top: 0px;
+          inset-inline-start: 0;
+        }
+        &:nth-child(2) {
+          top: 0px;
+          inset-inline-end: 0;
+          animation-delay: 0.4s;
+        }
+        &:nth-child(3) {
+          inset-inline-end: 0;
+          bottom: 0;
+          animation-delay: 0.8s;
+        }
+        &:nth-child(4) {
+          bottom: 0;
+          inset-inline-start: 0;
+          animation-delay: 1.2s;
+        }
+      }
+    }
+  }
+}
