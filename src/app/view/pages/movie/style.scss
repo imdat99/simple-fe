@@ -305,6 +305,9 @@
       }
     }
   }
+  .maintitle {
+    color: var(--main-text-color) !important;
+  }
   .level.genres {
     flex-direction: column;
     .level-left {

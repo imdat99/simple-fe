@@ -96,6 +96,9 @@ export function define(tagname: string) {
           newView
         )(this.$rootEl as any) as HTMLElement;
         this.$oldView = newView;
+        if (this.watchRender) {
+          this.watchRender();
+        }
       }
 
       mount() {

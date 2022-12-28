@@ -3,16 +3,19 @@
     width: 100%;
     .poster-img {
       &::after {
+        font-family: "Font Awesome 6 Free";
         position: absolute;
         z-index: 0;
-        content: "Đang tải...";
+        color: var(--overlay-color);
+        font-size: 4rem;
+        content: "\f03e";
       }
       display: flex;
       margin: auto;
       justify-content: center;
       align-items: center;
       // height: 240px;
-      background-color: var(--second-background-color);
+      background-color: transparent;
       overflow: hidden;
       justify-content: center;
       cursor: pointer;

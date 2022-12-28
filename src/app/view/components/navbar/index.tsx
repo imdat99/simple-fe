@@ -8,6 +8,7 @@ export class AppNav extends AppElement {
   constructor() {
     super();
   }
+
   connected() {
     this.data.dark = localStorage.getItem("dark") === "true";
     document.addEventListener(
@@ -15,6 +16,28 @@ export class AppNav extends AppElement {
       this.handleClickOutside.bind(this),
       true
     );
+    let oldPath = this.data.activeRoute;
+    const activeRoute = () =>
+      (this.data.activeRoute = window.location.pathname);
+    window.onload = function () {
+      const bodyList = document.querySelector("body");
+
+      const observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function () {
+          if (oldPath != document.location.href) {
+            oldPath = document.location.href;
+            activeRoute();
+          }
+        });
+      });
+
+      const config = {
+        childList: true,
+        subtree: true,
+      };
+
+      observer.observe(bodyList!, config);
+    };
   }
 
   disconnected() {
@@ -34,6 +57,7 @@ export class AppNav extends AppElement {
   data = {
     toggle: false,
     dark: false,
+    activeRoute: window.location.pathname,
   };
 
   setThem() {
@@ -75,7 +99,11 @@ export class AppNav extends AppElement {
               {appRoute
                 .filter((item) => item.name)
                 .map((item) => (
-                  <li class="nav-item">
+                  <li
+                    class={`nav-item ${
+                      item.path === this.data.activeRoute ? "active" : ""
+                    }`}
+                  >
                     <app-link to={item.path} class="nav-link">
                       {item.name}
                     </app-link>

@@ -22,24 +22,26 @@ class MovieStar extends AppElement {
     let product_page = Math.ceil(product.length / 4);
     let l = 0;
     let movePer = 25;
-    let maxMove = product.length * 12;
-    // mobile_view
-    let mob_view = window.matchMedia("(max-width: 768px)");
-    if (mob_view.matches) {
-      movePer = 50.36;
-      maxMove = 504;
-    }
+    let isInView = false;
+    const isInViewport = () => {
+      const rect = product[product.length - 1].getBoundingClientRect();
+      return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || this.clientHeight) &&
+        rect.right <= (window.innerWidth || this.clientWidth)
+      );
+    };
 
-    let right_mover = () => {
-      l = l + movePer;
-      if (product.length == 1) {
-        l = 0;
-      }
-      for (const i of product as any) {
-        if (l > maxMove) {
-          l = l - movePer;
+    const right_mover = () => {
+      if (!isInView) {
+        l = l + movePer;
+        if (product.length == 1) {
+          l = 0;
         }
-        (i as any).style.left = "-" + l + "%";
+        for (const i of product as any) {
+          (i as any).style.left = "-" + l + "%";
+        }
       }
     };
     let left_mover = () => {
@@ -54,10 +56,12 @@ class MovieStar extends AppElement {
       }
     };
     span[1].onclick = () => {
+      isInView = isInViewport();
       right_mover();
     };
     span[0].onclick = () => {
       left_mover();
+      isInView = isInViewport();
     };
   }
   view() {
@@ -85,7 +89,6 @@ class MovieStar extends AppElement {
                         <img
                           src="/110.png"
                           alt=""
-                          class="rounded-circle"
                           lazy-src={encodeURI(
                             item.cover ||
                               item.imageUrl ||
