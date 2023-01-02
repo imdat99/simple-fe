@@ -43,3 +43,8 @@ export const jumpLink = (item?: any) => {
   };
   return createSlug() + createId();
 };
+
+export const isBottom = () => {
+  const { scrollHeight, clientHeight, scrollTop } = document.documentElement;
+  return scrollTop + clientHeight > scrollHeight - 250;
+};

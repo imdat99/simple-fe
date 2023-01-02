@@ -4,6 +4,7 @@ import { AppNav } from "@app/view/components/navbar";
 import { AppOutlet } from "@app/view/components/outlet";
 import "@app/assets/style/main.scss";
 import { AppFooter } from "@app/view/components/footer";
+import { store } from "@app/store";
 
 @define("my-app")
 export class MyApp extends HTMLElement {
@@ -24,3 +25,4 @@ export class MyApp extends HTMLElement {
     setTimeout(console.log.bind(console, "%cDAT09.FUN 🎬", cssRule), 0);
   }
 }
+

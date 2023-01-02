@@ -12,11 +12,16 @@ export class AlbumPage extends AppElement {
   }
 
   connected() {
-    this.listenScroll();
+    // this.listenScroll();
     router.params()[0]((params) => {
       this.data.params.id = params.id;
     });
     this.getData();
+    window.addEventListener("scroll", this.listenScroll.bind(this));
+  }
+
+  disconnected() {
+    window.removeEventListener("scroll", this.listenScroll.bind(this));
   }
 
   stateData() {
@@ -34,13 +39,14 @@ export class AlbumPage extends AppElement {
   }
 
   listenScroll() {
-    window.onscroll = () => {
-      const { scrollHeight, clientHeight, scrollTop } =
-        document.documentElement;
-      if (scrollTop + clientHeight > scrollHeight - 250 && !this.data.isEnd) {
-        this.data.params.page++;
-      }
-    };
+    const { scrollHeight, clientHeight, scrollTop } = document.documentElement;
+    if (
+      scrollTop + clientHeight > scrollHeight - 250 &&
+      !this.data.isEnd &&
+      !this.data.loading
+    ) {
+      this.data.params.page++;
+    }
   }
 
   watch(property: string) {
@@ -80,8 +86,7 @@ export class AlbumPage extends AppElement {
           this.data.resData?.shareImg || this.data.resData?.headImg
         )}");
         background-size: cover;
-        `}
-        ></div>
+        `}></div>
         <div class="container my-5">
           {this.data.show && <LoadingScren />}
           <div class="home-content">

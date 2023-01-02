@@ -1,3 +1,4 @@
-export enum EXAMPLE_ENUM {
-  ex1 = "ex1",
+export enum EVENT_TYPE {
+  INIT = "INIT",
+  DESTROY = "DESTROY",
 }
