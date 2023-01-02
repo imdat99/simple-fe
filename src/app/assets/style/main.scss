@@ -18,8 +18,8 @@
   --black-text-color: #{$gray_9};
   --main-shadow-color: rgba(0, 0, 0, 0.2);
   --second-shadow-color: rgba(0, 0, 0, 0.35);
-  --overlay-color: rgba(0, 0, 0, 0.5);
-  --close-color: #{$gray_3};
+  --overlay-color: rgba(136, 136, 136, 0.8);
+  --close-color: #{$gray_4};
   --light-icon: #{$yellow_5};
 }
 
@@ -51,7 +51,7 @@ body.theme-dark {
   --second-text-color: #{$dark_3};
   --main-shadow-color: rgba(59, 59, 59, 0.02);
   --second-shadow-color: rgba(59, 59, 59, 0.035);
-  --overlay-color: rgba(126, 126, 126, 0.5);
+  --overlay-color: rgba(46, 46, 46, 0.8);
   --close-color: #{$gray_8};
   --3rd-background-color: #{$gray_9};
   color: var(--main-text-color);
@@ -315,4 +315,21 @@ header {
   bottom: 12px;
   font-size: 1.5rem;
   z-index: 100;
+}
+
+.hero-header {
+  position: fixed;
+  z-index: -1;
+  height: 70vh;
+  top: 58px;
+  width: 100vw;
+  background: black;
+  overflow: hidden;
+  object-fit: center;
+  background-repeat: no-repeat;
+
+  background: var(
+    --background-color
+  ); /* fallback colour. Make sure this is just one solid colour. */
+  /* The least supported option. */
 }

@@ -19,12 +19,13 @@ export type ChildPatch = ($node: HTMLElement) => HTMLElement | String;
 export type AdditionalPatch = (e: HTMLElement) => HTMLElement;
 export type ChangePropCallback = Map<any, (ov?: any, nv?: any) => void>;
 
-export type CustomElement = {
+export type CustomElement<T = Record<string, any>> = {
   connected?: (id?: string) => void;
   disconnected?: (id?: string) => void;
+  watchRender?: () => void;
   view: () => VNode;
-  data: Record<string, unknown>;
-  stateData: () => Record<string, any>;
+  stateData: () => T;
+  data: T;
 };
 
 export type ElementContructor = {

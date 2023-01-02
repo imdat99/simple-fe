@@ -85,6 +85,7 @@ export class WatchMovie extends AppElement {
       this.player();
     }
     if (property === "ep") {
+      window.scrollTo(0, 0);
       this.artPlayer?.destroy(false);
       this.getMovieDetail();
     }
@@ -127,26 +128,12 @@ export class WatchMovie extends AppElement {
     const { pathname, search } = window.location;
     const { episodeVo, aliasName, name, introduction } =
       this.data.resData || {};
-    return (
+    return this.data.loading ? (
+      <div class="spinner"></div>
+    ) : (
       <section class="section-watch">
         <div class="video">
-          {this.data.loading ? (
-            <LoadingScren />
-          ) : (
-            <div class="player-container" style="height: 560px"></div>
-          )}
-        </div>
-        <div class="text-center">
-          Phim không load được? hãy thử{" "}
-          <span
-            on={{
-              click: () => {
-                location.reload();
-              },
-            }}
-          >
-            Reload
-          </span>
+          <div class="player-container" style="height: 560px" />
         </div>
         <div class="text-center">
           Phim load chậm?{" "}
@@ -162,6 +149,20 @@ export class WatchMovie extends AppElement {
             }}
           >
             Xem hướng dẫn
+          </span>
+        </div>
+        <div class="text-center">
+          <span
+            class="text-danger"
+            on={{
+              click: () => {
+                window.open(
+                  "https://devratroom.blogspot.com/p/cross-domain-cors-extension.html"
+                );
+              },
+            }}
+          >
+            Phim không load được? hãy thử cài Extention Cors
           </span>
         </div>
         <p class="text-center">
@@ -184,14 +185,17 @@ export class WatchMovie extends AppElement {
           <div class="container">
             <div class="columns watch-top">
               <div class="column name">
-                <h1>{name}</h1>
+                <h1>
+                  {name}
+                  {episodeVo?.length > 1 ? ` - Ep.${this.data.ep + 1}` : ""}
+                </h1>
                 <h2> {aliasName}</h2>
                 <div class="intro my-3">
                   {introduction || "Đang cập nhật..."}
                 </div>
                 <div>
                   <a
-                    href={`https://www.facebook.com/sharer/sharer.php}`}
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${location.href}`}
                     class="fb-share-button"
                     target="_blank"
                   >
@@ -222,7 +226,7 @@ export class WatchMovie extends AppElement {
                             type="button"
                             data-ep={item.seriesNo}
                             disabled=""
-                            class="btn btn-danger me-1 disable"
+                            class="btn btn-success m-1 disable"
                           >
                             {item.seriesNo}
                           </button>
@@ -230,7 +234,7 @@ export class WatchMovie extends AppElement {
                           <button
                             type="button"
                             data-ep={item.seriesNo}
-                            class="btn btn-danger me-1 disable"
+                            class="btn btn-danger m-1 disable"
                           >
                             {item.seriesNo}
                           </button>

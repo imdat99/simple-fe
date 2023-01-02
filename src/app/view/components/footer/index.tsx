@@ -21,8 +21,11 @@ export class AppFooter extends HTMLElement {
                 </div>
               </app-link>
               <p class="small text-muted">
-                <strong>Vanilla-movie</strong>, (SPA) ứng dụng web xem phim được
-                làm thuần bằng TS, không sử dụng bất kỳ famework nào
+                <strong>Vanilla-movie</strong>, (SPA) ứng dụng web xem phim đơn
+                giản sử dụng
+                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
+                  <b> javascript.</b>
+                </a>
                 <br />
                 Nguồn phim được lấy từ api app
                 <a href="https://documenter.getpostman.com/view/18986031/UVXdNeFD">

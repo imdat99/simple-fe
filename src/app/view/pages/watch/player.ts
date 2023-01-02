@@ -4,7 +4,7 @@ export default function player(options: Record<string, any>) {
     container: ".player-container",
     isLive: false,
     muted: false,
-    autoplay: false,
+    autoplay: true,
     pip: true,
     autoSize: true,
     autoMini: true,
@@ -20,7 +20,7 @@ export default function player(options: Record<string, any>) {
     backdrop: true,
     playsInline: true,
     autoPlayback: true,
-    airplay: true,
+    airplay: false,
     theme: "#E03131",
     customType: {
       m3u8(video: any, url: string) {
@@ -46,7 +46,7 @@ export default function player(options: Record<string, any>) {
       type: "srt",
       style: {
         color: "#fff",
-        fontSize: "2.5rem",
+        fontSize: window.innerWidth > 560 ? "2.5rem" : "1rem",
       },
       encoding: "utf-8",
     },

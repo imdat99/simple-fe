@@ -44,6 +44,7 @@ export class AppLink extends HTMLElement {
     aTag.addEventListener("click", (e) => {
       if (this.target !== "_blank") {
         router.navigateTo(this.to || "/");
+        window.scrollTo(0, 0);
         e.preventDefault();
       }
     });

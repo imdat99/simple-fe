@@ -26,12 +26,9 @@ export class AppMovie extends AppElement {
     };
   }
 
-  watch(property: string) {
-    if (property === "loading") {
-      getLazyImg.call(this);
-    }
+  watchRender() {
+    getLazyImg.call(this);
   }
-
   connected() {
     router.params()[0]((params) => {
       this.data.params.id = params.id;
@@ -72,6 +69,8 @@ export class AppMovie extends AppElement {
     const { pathname, search } = window.location;
     return this.data.isEnd ? (
       <span>không còn dữ liệu</span>
+    ) : this.data.loading ? (
+      <div class="spinner"></div>
     ) : (
       <div class="detail-page">
         <div
@@ -123,7 +122,9 @@ export class AppMovie extends AppElement {
                 <div class="level genres">
                   <div class="level-left">
                     <div class="level-item">
-                      <a href="#">
+                      <a
+                        href={`https://www.facebook.com/sharer/sharer.php?u=${location.href}`}
+                      >
                         <i class="fa-brands fa-square-facebook"></i>
                         Chia sẻ
                       </a>
@@ -187,7 +188,6 @@ export class AppMovie extends AppElement {
             </div>
           </div>
         </section>
-        {this.data.loading && <div class="spinner"></div>}
       </div>
     );
   }

@@ -12,12 +12,16 @@ export class AlbumPage extends AppElement {
   }
 
   connected() {
-    this.listenScroll();
-    console.log(this.params);
+    // this.listenScroll();
     router.params()[0]((params) => {
       this.data.params.id = params.id;
     });
     this.getData();
+    window.addEventListener("scroll", this.listenScroll.bind(this));
+  }
+
+  disconnected() {
+    window.removeEventListener("scroll", this.listenScroll.bind(this));
   }
 
   stateData() {
@@ -35,13 +39,14 @@ export class AlbumPage extends AppElement {
   }
 
   listenScroll() {
-    window.onscroll = () => {
-      const { scrollHeight, clientHeight, scrollTop } =
-        document.documentElement;
-      if (scrollTop + clientHeight > scrollHeight - 250 && !this.data.isEnd) {
-        this.data.params.page++;
-      }
-    };
+    const { scrollHeight, clientHeight, scrollTop } = document.documentElement;
+    if (
+      scrollTop + clientHeight > scrollHeight - 250 &&
+      !this.data.isEnd &&
+      !this.data.loading
+    ) {
+      this.data.params.page++;
+    }
   }
 
   watch(property: string) {
@@ -73,18 +78,27 @@ export class AlbumPage extends AppElement {
   view() {
     const content = [...this.data.content];
     return (
-      <div class="container my-5">
-        {this.data.show && <LoadingScren />}
-        <div class="home-content">
-          <div class="my-5">
-            <strong class="d-block h5 my-2 pb-2 border-bottom">
-              {this.data.resData?.name}
-            </strong>
-            {this.data?.content}
-            <ListMovie props={content} />
+      <div>
+        <div
+          class="hero-header"
+          style={`
+        background: linear-gradient(var(--overlay-color),var(--background-color)),url("${encodeURI(
+          this.data.resData?.shareImg || this.data.resData?.headImg
+        )}");
+        background-size: cover;
+        `}></div>
+        <div class="container my-5">
+          {this.data.show && <LoadingScren />}
+          <div class="home-content">
+            <div class="my-5">
+              <strong class="d-block h5 my-2 pb-2 border-bottom">
+                {this.data.resData?.name}
+              </strong>
+              <ListMovie props={content} />
+            </div>
+            {this.data.loading && <div class="spinner"></div>}
+            {this.data.isEnd && <span>không còn dữ liệu</span>}
           </div>
-          {this.data.loading && <div class="spinner"></div>}
-          {this.data.isEnd && <span>không còn dữ liệu</span>}
         </div>
       </div>
     );

@@ -1,10 +1,11 @@
+import { store } from "@app/store";
 import { h, mount } from "@core/render";
 import { ElementContructor, VNode } from "@core/type";
-import { $render, diff } from "..";
+import { $render, AppElement, diff, isInViewport } from "..";
 
 const randomId = (name: string) =>
   name + "_" + (Math.random() + 1).toString(36).substring(7);
-function createState(stateObj: any) {
+function createState(stateObj: AppElement) {
   const createDataProxyHandler = (path?: string) => ({
     get: (obj: Record<string, any>, key: string): Record<string, any> => {
       const fullPath = path ? path + "." + String(key) : key;
@@ -17,19 +18,12 @@ function createState(stateObj: any) {
     set(obj: Record<string, any>, key: string, value: any) {
       const fullPath = path ? path + "." + String(key) : key;
 
-      stateObj._changeProp = {
-        [fullPath]: {
-          oldValue: obj[key],
-          newValue: value,
-        },
-      };
-
       obj[key] = value;
       if (stateObj.watch) {
         stateObj.watch.call(stateObj, fullPath);
       }
 
-      stateObj.render.call(stateObj);
+      (stateObj as any).render.call(stateObj);
       return true;
     },
   });
@@ -40,14 +34,14 @@ function createState(stateObj: any) {
       if (key in data) {
         return createDataProxyHandler().set(data, key, value);
       }
-      stateObj[key] = value;
+      data[key] = value;
       return true;
     },
     get: (_: never, key: string) => {
       if (key in data) {
         return createDataProxyHandler().get(data, key);
       }
-      return stateObj[key];
+      return data[key];
     },
   };
 
@@ -74,11 +68,26 @@ export function define(tagname: string) {
         if (this.stateData) {
           this.data = this.stateData();
         }
+        if (this.connectStore) {
+          // this.connectStore(store.getState());
+          const that = this;
+          const subscribeStore = () => {
+            if (that.connectStore) {
+              that.connectStore(store.getState());
+            }
+            this.render.call(this);
+          };
+          Object.defineProperty(subscribeStore, "name", {
+            value: "subscribeStore_" + compnentId,
+            writable: false,
+          });
+          store.subscribe(subscribeStore)();
+        }
         if (this.view) {
           this.mount();
         }
         if (this.data && !isProxy(this.data)) {
-          this.data = createState(this);
+          this.data = createState(this as AppElement);
         }
         if (this.connected) {
           this.connected(this.$id);
@@ -96,6 +105,9 @@ export function define(tagname: string) {
           newView
         )(this.$rootEl as any) as HTMLElement;
         this.$oldView = newView;
+        if (this.watchRender) {
+          this.watchRender();
+        }
       }
 
       mount() {
@@ -107,6 +119,11 @@ export function define(tagname: string) {
         );
       }
     };
+    Object.defineProperty(Generated, "name", {
+      value: compnentId + "@" + tagname,
+      writable: false,
+    });
+
     customElements.define(tagname, Generated);
     return Generated;
   };
